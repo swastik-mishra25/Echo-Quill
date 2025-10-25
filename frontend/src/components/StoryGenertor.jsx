@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import StoryInput from "../components/StoryInput";
-import StoryOutput from "..components/StoryOutput";
+import StoryOutput from "../components/StoryOutput";
 
 export default function StoryGenerator() {
   const [story, setStory] = useState("");

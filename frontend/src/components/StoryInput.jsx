@@ -5,38 +5,14 @@ export default function StoryInput({ onGenerate }) {
   const [genre, setGenre] = useState("Fantasy");
   const [tone, setTone] = useState("Inspirational");
   const [length, setLength] = useState("Medium");
-  const [loading, setLoading] = useState(false);
 
-  const handleGenerate = async () => {
+  const handleGenerate = () => {
     if (!theme.trim()) {
       alert("Please enter a theme or prompt!");
       return;
     }
 
-    setLoading(true);
-
-    try {
-      const response = await fetch("http://127.0.0.1:8000/generate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ theme, genre, tone, length }), // ✅ must be object
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        onGenerate(data.story); // pass story string to parent
-      } else {
-        alert(data.detail || "Failed to generate story.");
-      }
-    } catch (error) {
-      console.error("Error generating story:", error);
-      alert("Error connecting to backend.");
-    } finally {
-      setLoading(false);
-    }
+    onGenerate({ theme, genre, tone, length });
   };
 
   return (
@@ -88,14 +64,9 @@ export default function StoryInput({ onGenerate }) {
 
       <button
         onClick={handleGenerate}
-        disabled={loading}
-        className={`w-full mt-6 py-3 font-semibold rounded-lg text-white transition ${
-          loading
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-linear-to-r from-blue-500 to-purple-600 hover:opacity-90"
-        }`}
+        className="w-full mt-6 py-3 font-semibold rounded-lg text-white transition bg-linear-to-r from-blue-500 to-purple-600 hover:opacity-90"
       >
-        {loading ? "Generating..." : "Generate Story"}
+        Generate Story
       </button>
     </div>
   );
