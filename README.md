@@ -182,14 +182,6 @@ Then deploy easily via:
 
 ---
 
-## 📸 Preview
-
-![Echo Quill Demo](https://github.com/swastik-mishra25/Echo-Quill/assets/demo.gif)
-
-*(Add your demo GIF or screenshots here)*
-
----
-
 ## 💡 Future Enhancements
 
 - ✍️ Story continuation and editing feature  
