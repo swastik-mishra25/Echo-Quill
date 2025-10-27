@@ -1,4 +1,4 @@
-# 🪶 Echo Quill – Full-Stack AI Story Generator
+# ✨Echo Quill – Full-Stack AI Story Generator
 
 **Echo Quill** is an intelligent story generation platform powered by **LangChain** and **Google GenAI**, enabling users to craft creative, engaging, and personalized stories with just a few clicks.  
 With a fast **FastAPI backend** and a responsive **React + Vite frontend**, Echo Quill delivers a seamless storytelling experience with modern design and modular architecture.
