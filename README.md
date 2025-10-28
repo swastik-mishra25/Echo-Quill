@@ -13,7 +13,6 @@ With a fast **FastAPI backend** and a responsive **React + Vite frontend**, Echo
 - 🎨 **Modern Frontend** using React + Vite + Tailwind CSS  
 - 🧩 **Component-Based Architecture** for clean and reusable UI  
 - 🛠️ **Environment Variable Management** with `python-dotenv`  
-- 🔁 **Hot Module Replacement (HMR)** for rapid frontend iteration  
 - 🧱 **Typed Data Models** powered by Pydantic  
 - 🐳 **Production-Ready Deployment** via Gunicorn and FastAPI  
 
