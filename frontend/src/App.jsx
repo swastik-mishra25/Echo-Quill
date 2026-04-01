@@ -14,7 +14,7 @@ export default function App() {
     setStory("");
 
     try {
-      const response = await fetch("https://echo-quill.onrender.com/generate", {
+      const response = await fetch("https://echo-quill-1.onrender.com", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ theme, genre, tone, length }),
