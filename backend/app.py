@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from dotenv import load_dotenv
 import os
 
-# LangChain + Gemini 2.5 Pro
+# LangChain + Gemini 2.5 Flash
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -17,7 +17,7 @@ if not api_key:
     raise ValueError("GEMINI_API_KEY not found in environment variables.")
 
 # Initialize FastAPI app
-app = FastAPI(title="EchoQuill API - Gemini 2.5 Pro 🚀")
+app = FastAPI(title="EchoQuill API - Gemini 2.5 Flash 🚀")
 
 # Enable CORS
 app.add_middleware(
@@ -28,9 +28,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize Gemini 2.5 Pro LLM
+# Initialize Gemini 2.5 Flash LLM
 llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-pro",
+    model="gemini-2.5-flash", # Fixed the model here!
     api_key=api_key
 )
 
@@ -44,7 +44,7 @@ class GenerateRequest(BaseModel):
 # Root endpoint
 @app.get("/")
 async def root():
-    return {"message": "EchoQuill API running with Gemini 2.5 Pro 🚀"}
+    return {"message": "EchoQuill API running with Gemini 2.5 Flash 🚀"}
 
 # Generate endpoint
 @app.post("/generate")
