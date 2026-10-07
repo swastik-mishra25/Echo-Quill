@@ -29,12 +29,22 @@ export default function App() {
 
     try {
       // ⚠️ REPLACE THIS URL WITH YOUR ACTUAL RENDER URL ⚠️
-      await fetchEventSource('https://echo-quill-1.onrender.com', {
+      await fetchEventSource(' https://echo-quill-1.onrender.com/api/story/stream', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Accept': 'text/event-stream',
         },
         body: JSON.stringify(formData),
+        async onopen(response) {
+          if (response.ok) {
+            return; 
+          } else {
+            const errorText = await response.text();
+            console.error(`Server rejected request: ${response.status} - ${errorText}`);
+            throw new Error(`Server Error ${response.status}`);
+          }
+        },
         onmessage(ev) {
           if (ev.event === 'outline') {
             setOutline(JSON.parse(ev.data));
