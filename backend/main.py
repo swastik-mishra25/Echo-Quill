@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sse_starlette.sse import EventSourceResponse
 
+
 from schemas import StoryRequest
 from chains import outline_chain, story_streaming_chain
 
@@ -11,7 +12,7 @@ app = FastAPI(title="EchoQuill Engine")
 # CORS setup for React Vite frontend (defaults to localhost:5173)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*", "*"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
