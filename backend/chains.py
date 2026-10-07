@@ -16,7 +16,7 @@ if not api_key:
 
 # Base LLM initialized with your explicit key
 llm = ChatGoogleGenerativeAI(
-    model="gemini-3.8-flash",
+    model="gemini-2.5-flash",
     temperature=0.7,
     api_key=api_key
 )
