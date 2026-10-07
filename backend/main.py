@@ -1,5 +1,6 @@
 import json
 import traceback
+import asyncio
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sse_starlette.sse import EventSourceResponse
@@ -25,7 +26,7 @@ async def story_event_generator(request_data: StoryRequest):
         
         # 1. Generate Structured Outline (Stage 1)
         print("DEBUG: Contacting Gemini for outline...")
-        outline = await outline_chain.ainvoke(payload)
+        outline = await asyncio.to_thread(outline_chain.invoke, payload)
         print("DEBUG: Outline generated successfully!")
         
         # Push outline JSON immediately to UI
