@@ -1,7 +1,73 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* Our custom cinematic animation */
+@theme {
+  --font-sans: "Space Grotesk", "Outfit", "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+  --font-display: "Space Grotesk", "Outfit", sans-serif;
+  --font-serif: "Newsreader", "Cormorant Garamond", Georgia, serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+/* Base Body Styles */
+html,
+body {
+  background-color: #030611;
+  color: #e2e8f0;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: var(--active-font-ui, var(--font-sans));
+  overflow-x: hidden;
+  letter-spacing: -0.01em;
+}
+
+/* Micro Subtle Cyber Grid Overlay */
+.cyber-grid {
+  background-size: 36px 36px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+}
+
+/* Uniform, Smoothly Distributed Ambient Atmosphere */
+.aurora-canopy {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(180deg, var(--aurora-top, rgba(6, 182, 212, 0.08)) 0%, transparent 48%),
+    radial-gradient(ellipse 700px 500px at 5% 20%, var(--aurora-left, rgba(6, 182, 212, 0.06)) 0%, transparent 75%),
+    radial-gradient(ellipse 700px 500px at 95% 25%, var(--aurora-right, rgba(244, 63, 94, 0.06)) 0%, transparent 75%),
+    linear-gradient(0deg, var(--aurora-bottom, rgba(99, 102, 241, 0.07)) 0%, transparent 42%);
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Uniform Glassmorphic Card */
+.cyber-glass-uniform {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    rgba(255, 255, 255, 0.012) 50%,
+    rgba(255, 255, 255, 0.022) 100%
+  );
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 
+    0 18px 45px -12px rgba(0, 0, 0, 0.75),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.cyber-glass-uniform:hover {
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 
+    0 22px 55px -15px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Pure CSS Keyframes */
 @keyframes fadeInUp {
   0% {
     opacity: 0;
@@ -17,25 +83,96 @@
   animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Force dark mode */
-body,
-html {
-  background-color: #030712;
-  color: #e5e7eb;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
+.animate-fade-in-up-delayed {
+  opacity: 0;
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 150ms forwards;
 }
 
-/* Custom glowing scrollbar for the live draft */
-.scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
+/* Glowing Pulsing Terminal Cursor Block (|) */
+@keyframes cyberCursorPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scaleY(1);
+    box-shadow: var(--cursor-glow, 0 0 12px #06b6d4, 0 0 20px rgba(244, 63, 94, 0.6));
+  }
+  50% {
+    opacity: 0.18;
+    transform: scaleY(0.78);
+    box-shadow: none;
+  }
 }
-.scrollbar-thin::-webkit-scrollbar-track {
-  background: transparent;
+
+.animate-cyber-cursor {
+  animation: cyberCursorPulse 0.85s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
-.scrollbar-thin::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
+
+/* Custom Cyberpunk Glassmorphic Scrollbar */
+.scrollbar-cyber::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+.scrollbar-cyber::-webkit-scrollbar-track {
+  background: rgba(3, 6, 17, 0.7);
+  border-radius: 9999px;
+  margin: 4px;
+}
+
+.scrollbar-cyber::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    180deg,
+    var(--c1, #06b6d4) 0%,
+    var(--c2, #6366f1) 50%,
+    var(--c3, #f43f5e) 100%
+  );
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+  opacity: 0.75;
+}
+
+.scrollbar-cyber::-webkit-scrollbar-thumb:hover {
+  box-shadow: 0 0 10px var(--c1, #06b6d4);
+  opacity: 1;
+}
+
+/* Literary Prose Typography */
+.prose-cinematic {
+  font-family: var(--active-font-prose, var(--font-serif));
+  line-height: 1.92;
+  letter-spacing: 0.012em;
+}
+
+.prose-cinematic p {
+  margin-bottom: 1.6em;
+  color: #cbd5e1;
+  font-size: 1.15rem;
+}
+
+.prose-cinematic h1,
+.prose-cinematic h2,
+.prose-cinematic h3 {
+  font-family: var(--active-font-ui, var(--font-display));
+  color: #f8fafc;
+  letter-spacing: -0.02em;
+  margin-top: 1.8em;
+  margin-bottom: 0.8em;
+}
+
+.prose-cinematic blockquote {
+  border-left: 2px solid var(--c1, #06b6d4);
+  padding-left: 1.25rem;
+  font-style: italic;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.02);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.prose-cinematic hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--c1, #06b6d4), var(--c3, #f43f5e), transparent);
+  margin: 2.5rem 0;
 }
