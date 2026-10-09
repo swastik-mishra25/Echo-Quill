@@ -1,50 +1,41 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-/* Light mode defaults */
-body {
-  font-family: 'Inter', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  background-color: #f9fafb; /* gray-50 */
-  color: #111827; /* gray-900 */
-  transition: background-color 0.5s, color 0.5s;
-}
-
-/* Dark mode */
-.dark body {
-  background-color: #0f172a; /* slate-900 */
-  color: #f3f4f6; /* gray-100 */
-}
-
-/* Loader */
-.loader {
-  border: 3px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #3b82f6;
-  border-radius: 9999px;
-  width: 3rem;
-  height: 3rem;
-  animation: spin 1s linear infinite;
-  margin: 2rem auto;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Fade-in animation */
-.fade-in {
-  opacity: 0;
-  animation: fadeIn 0.8s ease forwards;
-}
-
-@keyframes fadeIn {
-  from {
+/* Our custom cinematic animation */
+@keyframes fadeInUp {
+  0% {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(20px);
   }
-  to {
+  100% {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Force dark mode */
+body,
+html {
+  background-color: #030712;
+  color: #e5e7eb;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Custom glowing scrollbar for the live draft */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
 }
