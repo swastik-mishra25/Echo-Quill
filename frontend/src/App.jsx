@@ -1,168 +1,298 @@
-import { useState } from 'react';
-import { fetchEventSource } from '@microsoft/fetch-event-source';
-import ReactMarkdown from 'react-markdown';
-import { Loader2, PenTool, BookOpen } from 'lucide-react';
+import React, { useState } from "react";
+import { fetchEventSource } from "@microsoft/fetch-event-source";
+import ReactMarkdown from "react-markdown";
 
-export default function App() {
+// Replace with your local backend URL if testing locally (e.g., http://localhost:10000)
+const API_BASE_URL = "https://echo-quill-1.onrender.com";
+
+function App() {
+  // --- STATE MANAGEMENT ---
+  // Stage 1: Initial Idea
   const [formData, setFormData] = useState({
-    genre: 'Cyberpunk Noir',
-    protagonist: 'A burned-out memory archivist',
-    setting: 'Neo-Shinjuku, perpetual acid rain',
-    tone: 'Gritty, atmospheric',
-    premise: 'Uncovers a memory chip containing a politician\'s murder.'
+    genre: "",
+    protagonist: "",
+    setting: "",
+    tone: "",
+    premise: "",
   });
 
+  // Stage 2: The Outline (Editable)
   const [outline, setOutline] = useState(null);
-  const [story, setStory] = useState('');
-  const [isGenerating, setIsGenerating] = useState(false);
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+  // Stage 3: The Story
+  const [storyText, setStoryText] = useState("");
+
+  // Loading States
+  const [isGeneratingOutline, setIsGeneratingOutline] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
+
+  // --- HANDLERS ---
+  const handleIdeaChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const generateStory = async (e) => {
+  const handleOutlineChange = (e) => {
+    setOutline({ ...outline, [e.target.name]: e.target.value });
+  };
+
+  // STEP 1: Generate Outline
+  const handleGenerateOutline = async (e) => {
     e.preventDefault();
-    setIsGenerating(true);
-    setOutline(null);
-    setStory('');
+    setIsGeneratingOutline(true);
+    setStoryText(""); // Reset story if regenerating
 
     try {
-      // ⚠️ REPLACE THIS URL WITH YOUR ACTUAL RENDER URL ⚠️
-      await fetchEventSource(' https://echo-quill-1.onrender.com/api/story/stream', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'text/event-stream',
-        },
+      const response = await fetch(`${API_BASE_URL}/api/story/outline`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
-        async onopen(response) {
-          if (response.ok) {
-            return; 
-          } else {
-            const errorText = await response.text();
-            console.error(`Server rejected request: ${response.status} - ${errorText}`);
-            throw new Error(`Server Error ${response.status}`);
-          }
-        },
-        onmessage(ev) {
-          if (ev.event === 'outline') {
-            setOutline(JSON.parse(ev.data));
-          } else if (ev.event === 'chunk') {
-            const parsed = JSON.parse(ev.data);
-            setStory((prev) => prev + parsed.text);
-          } else if (ev.event === 'done') {
-            setIsGenerating(false);
-          }
-        },
-        onerror(err) {
-          console.error("Stream error:", err);
-          setIsGenerating(false);
-          throw err; 
-        }
       });
+
+      if (!response.ok) throw new Error("Failed to generate outline");
+
+      const data = await response.json();
+      setOutline(data); // Switches UI to Stage 2
     } catch (error) {
-      console.error("Failed to generate story:", error);
-      setIsGenerating(false);
+      console.error("Outline error:", error);
+      alert("Error generating outline. Check console.");
+    } finally {
+      setIsGeneratingOutline(false);
     }
   };
 
+  // STEP 2: Stream Final Story
+  const handleStreamStory = async () => {
+    setIsStreaming(true);
+    setStoryText(""); // Clear previous text
+
+    // Combine edited outline with the original tone required by the backend
+    const payload = {
+      ...outline,
+      tone: formData.tone,
+    };
+
+    try {
+      await fetchEventSource(`${API_BASE_URL}/api/story/stream`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+        onmessage(ev) {
+          if (ev.event === "chunk") {
+            const data = JSON.parse(ev.data);
+            setStoryText((prev) => prev + data.text);
+          }
+          if (ev.event === "done") {
+            setIsStreaming(false);
+          }
+        },
+        onerror(err) {
+          console.error("Stream failed:", err);
+          setIsStreaming(false);
+          throw err; // Stop retrying
+        },
+      });
+    } catch (error) {
+      console.error("SSE Connection Error:", error);
+      setIsStreaming(false);
+    }
+  };
+
+  // Reset entirely
+  const handleStartOver = () => {
+    setOutline(null);
+    setStoryText("");
+  };
+
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100 p-8 font-sans">
-      <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* Left Column: Input Form */}
-        <div className="lg:col-span-1 bg-gray-900 border border-gray-800 rounded-xl p-6 shadow-xl h-fit">
-          <div className="flex items-center gap-3 mb-6 border-b border-gray-800 pb-4">
-            <PenTool className="text-emerald-500 w-6 h-6" />
-            <h1 className="text-2xl font-bold tracking-tight">Echo-Quill</h1>
-          </div>
-          
-          <form onSubmit={generateStory} className="space-y-4">
-            {['genre', 'protagonist', 'setting', 'tone'].map((field) => (
-              <div key={field}>
-                <label className="block text-sm font-medium text-gray-400 mb-1 capitalize">
-                  {field}
-                </label>
-                <input
-                  type="text"
-                  name={field}
-                  value={formData[field]}
-                  onChange={handleInputChange}
-                  required
-                  className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-colors"
-                />
-              </div>
-            ))}
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-1">Core Premise</label>
-              <textarea
-                name="premise"
-                value={formData.premise}
-                onChange={handleInputChange}
+    <div className="min-h-screen bg-gray-900 text-gray-100 p-8 font-sans">
+      <div className="max-w-4xl mx-auto space-y-8">
+        <header className="text-center">
+          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+            EchoQuill Engine
+          </h1>
+          <p className="text-gray-400 mt-2">AI-Powered Narrative Generation</p>
+        </header>
+
+        {/* --- UI VIEW 1: THE IDEA FORM --- */}
+        {!outline && (
+          <form
+            onSubmit={handleGenerateOutline}
+            className="bg-gray-800 p-6 rounded-lg shadow-lg space-y-4"
+          >
+            <h2 className="text-xl font-semibold border-b border-gray-700 pb-2">
+              1. Pitch Your Idea
+            </h2>
+
+            <div className="grid grid-cols-2 gap-4">
+              <input
+                name="genre"
+                placeholder="Genre (e.g. Cyberpunk Noir)"
+                value={formData.genre}
+                onChange={handleIdeaChange}
+                className="w-full bg-gray-700 p-3 rounded text-white"
                 required
-                rows={4}
-                className="w-full bg-gray-950 border border-gray-800 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-colors resize-none"
+              />
+              <input
+                name="tone"
+                placeholder="Tone (e.g. Gritty, Atmospheric)"
+                value={formData.tone}
+                onChange={handleIdeaChange}
+                className="w-full bg-gray-700 p-3 rounded text-white"
+                required
+              />
+              <input
+                name="protagonist"
+                placeholder="Protagonist (e.g. Burned-out hacker)"
+                value={formData.protagonist}
+                onChange={handleIdeaChange}
+                className="w-full bg-gray-700 p-3 rounded text-white"
+                required
+              />
+              <input
+                name="setting"
+                placeholder="Setting (e.g. Neo-Tokyo)"
+                value={formData.setting}
+                onChange={handleIdeaChange}
+                className="w-full bg-gray-700 p-3 rounded text-white"
+                required
               />
             </div>
 
+            <textarea
+              name="premise"
+              placeholder="Core Premise (What happens?)"
+              value={formData.premise}
+              onChange={handleIdeaChange}
+              className="w-full bg-gray-700 p-3 rounded text-white h-24"
+              required
+            />
+
             <button
               type="submit"
-              disabled={isGenerating}
-              className="w-full mt-4 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-2.5 px-4 rounded-lg transition-colors flex justify-center items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              disabled={isGeneratingOutline}
+              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded transition-colors disabled:opacity-50"
             >
-              {isGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Generate Narrative'}
+              {isGeneratingOutline
+                ? "Drafting Blueprint..."
+                : "Generate Outline"}
             </button>
           </form>
-        </div>
+        )}
 
-        {/* Right Column: Output Stream */}
-        <div className="lg:col-span-2 space-y-6">
-          
-          {/* Outline Blueprint Card */}
-          {outline && (
-            <div className="bg-gray-900 border border-emerald-900/50 rounded-xl p-6 shadow-xl relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
-              <h2 className="text-xl font-bold text-emerald-400 mb-4">{outline.title}</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                <div>
-                  <h3 className="text-gray-500 font-semibold mb-1">The Hook</h3>
-                  <p className="text-gray-300 leading-relaxed">{outline.hook}</p>
-                </div>
-                <div>
-                  <h3 className="text-gray-500 font-semibold mb-1">Thematic Elements</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {outline.key_themes.map((theme, idx) => (
-                      <span key={idx} className="bg-gray-800 border border-gray-700 px-2 py-1 rounded text-xs text-gray-300">
-                        {theme}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+        {/* --- UI VIEW 2: THE EDITABLE OUTLINE --- */}
+        {outline && !storyText && !isStreaming && (
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg space-y-4 border border-blue-500/30">
+            <h2 className="text-xl font-semibold text-blue-400 border-b border-gray-700 pb-2">
+              2. Review & Edit Blueprint
+            </h2>
+            <p className="text-sm text-gray-400 mb-4">
+              Tweak the AI's plan before generating the full prose.
+            </p>
+
+            <div className="space-y-3">
+              <div>
+                <label className="text-xs text-gray-400 uppercase">Title</label>
+                <input
+                  name="title"
+                  value={outline.title}
+                  onChange={handleOutlineChange}
+                  className="w-full bg-gray-700 p-2 rounded text-white font-bold"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-gray-400 uppercase">
+                  The Hook
+                </label>
+                <textarea
+                  name="hook"
+                  value={outline.hook}
+                  onChange={handleOutlineChange}
+                  className="w-full bg-gray-700 p-2 rounded text-white text-sm"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-gray-400 uppercase">
+                  Act 1: Setup
+                </label>
+                <textarea
+                  name="act_1_setup"
+                  value={outline.act_1_setup}
+                  onChange={handleOutlineChange}
+                  className="w-full bg-gray-700 p-2 rounded text-white text-sm"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-gray-400 uppercase">
+                  Act 2: Confrontation
+                </label>
+                <textarea
+                  name="act_2_confrontation"
+                  value={outline.act_2_confrontation}
+                  onChange={handleOutlineChange}
+                  className="w-full bg-gray-700 p-2 rounded text-white text-sm h-20"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-gray-400 uppercase">
+                  Act 3: Resolution
+                </label>
+                <textarea
+                  name="act_3_resolution"
+                  value={outline.act_3_resolution}
+                  onChange={handleOutlineChange}
+                  className="w-full bg-gray-700 p-2 rounded text-white text-sm"
+                />
               </div>
             </div>
-          )}
 
-          {/* Story Prose Card */}
-          {(story || isGenerating) && (
-            <div className="bg-gray-900 border border-gray-800 rounded-xl p-8 shadow-xl min-h-[500px]">
-              <div className="flex items-center gap-2 mb-6 border-b border-gray-800 pb-4">
-                <BookOpen className="text-gray-500 w-5 h-5" />
-                <h3 className="text-lg font-medium text-gray-300">Live Draft</h3>
-              </div>
-              
-              <div className="prose prose-invert prose-emerald max-w-none">
-                <ReactMarkdown>{story}</ReactMarkdown>
-                {isGenerating && story.length > 0 && (
-                  <span className="inline-block w-2 h-5 bg-emerald-500 ml-1 animate-pulse align-middle"></span>
-                )}
-              </div>
+            <div className="flex gap-4 pt-4">
+              <button
+                onClick={handleStartOver}
+                className="w-1/3 bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-4 rounded transition-colors"
+              >
+                Scrap It
+              </button>
+              <button
+                onClick={handleStreamStory}
+                className="w-2/3 bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 px-4 rounded transition-colors"
+              >
+                Confirm & Write Story
+              </button>
             </div>
-          )}
+          </div>
+        )}
 
-        </div>
+        {/* --- UI VIEW 3: THE LIVE DRAFT (SSE STREAM) --- */}
+        {(storyText || isStreaming) && (
+          <div className="bg-gray-800 p-6 rounded-lg shadow-lg space-y-4">
+            <div className="flex justify-between items-center border-b border-gray-700 pb-2">
+              <h2 className="text-xl font-semibold text-purple-400">
+                3. Live Draft
+              </h2>
+              {isStreaming && (
+                <span className="text-purple-400 text-sm animate-pulse">
+                  Streaming...
+                </span>
+              )}
+            </div>
+
+            <div className="prose prose-invert max-w-none prose-p:leading-relaxed">
+              <ReactMarkdown>{storyText}</ReactMarkdown>
+            </div>
+
+            {!isStreaming && storyText && (
+              <button
+                onClick={handleStartOver}
+                className="mt-8 w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded transition-colors"
+              >
+                Start a New Story
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 }
+
+export default App;
