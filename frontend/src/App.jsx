@@ -2,12 +2,9 @@ import React, { useState } from "react";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
 import ReactMarkdown from "react-markdown";
 
-// Replace with your local backend URL if testing locally (e.g., http://localhost:10000)
 const API_BASE_URL = "https://echo-quill-1.onrender.com";
 
 function App() {
-  // --- STATE MANAGEMENT ---
-  // Stage 1: Initial Idea
   const [formData, setFormData] = useState({
     genre: "",
     protagonist: "",
@@ -15,31 +12,20 @@ function App() {
     tone: "",
     premise: "",
   });
-
-  // Stage 2: The Outline (Editable)
   const [outline, setOutline] = useState(null);
-
-  // Stage 3: The Story
   const [storyText, setStoryText] = useState("");
-
-  // Loading States
   const [isGeneratingOutline, setIsGeneratingOutline] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
 
-  // --- HANDLERS ---
-  const handleIdeaChange = (e) => {
+  const handleIdeaChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleOutlineChange = (e) => {
+  const handleOutlineChange = (e) =>
     setOutline({ ...outline, [e.target.name]: e.target.value });
-  };
 
-  // STEP 1: Generate Outline
   const handleGenerateOutline = async (e) => {
     e.preventDefault();
     setIsGeneratingOutline(true);
-    setStoryText(""); // Reset story if regenerating
+    setStoryText("");
 
     try {
       const response = await fetch(`${API_BASE_URL}/api/story/outline`, {
@@ -47,11 +33,9 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
       if (!response.ok) throw new Error("Failed to generate outline");
-
       const data = await response.json();
-      setOutline(data); // Switches UI to Stage 2
+      setOutline(data);
     } catch (error) {
       console.error("Outline error:", error);
       alert("Error generating outline. Check console.");
@@ -60,16 +44,10 @@ function App() {
     }
   };
 
-  // STEP 2: Stream Final Story
   const handleStreamStory = async () => {
     setIsStreaming(true);
-    setStoryText(""); // Clear previous text
-
-    // Combine edited outline with the original tone required by the backend
-    const payload = {
-      ...outline,
-      tone: formData.tone,
-    };
+    setStoryText("");
+    const payload = { ...outline, tone: formData.tone };
 
     try {
       await fetchEventSource(`${API_BASE_URL}/api/story/stream`, {
@@ -81,14 +59,12 @@ function App() {
             const data = JSON.parse(ev.data);
             setStoryText((prev) => prev + data.text);
           }
-          if (ev.event === "done") {
-            setIsStreaming(false);
-          }
+          if (ev.event === "done") setIsStreaming(false);
         },
         onerror(err) {
           console.error("Stream failed:", err);
           setIsStreaming(false);
-          throw err; // Stop retrying
+          throw err;
         },
       });
     } catch (error) {
@@ -97,164 +73,201 @@ function App() {
     }
   };
 
-  // Reset entirely
   const handleStartOver = () => {
     setOutline(null);
     setStoryText("");
   };
 
+  // --- REUSABLE TAILWIND CLASSES ---
+  const inputStyles =
+    "w-full bg-white/5 border border-white/10 focus:border-blue-500/50 focus:ring-2 focus:ring-blue-500/20 rounded-xl p-4 text-white placeholder-gray-400 transition-all outline-none";
+  const labelStyles =
+    "block text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 mt-4 ml-1";
+
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100 p-8 font-sans">
+    <div className="min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-gray-900 via-[#0f172a] to-black text-gray-100 p-4 md:p-12 font-sans selection:bg-blue-500/30">
       <div className="max-w-4xl mx-auto space-y-8">
-        <header className="text-center">
-          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-            EchoQuill Engine
-          </h1>
-          <p className="text-gray-400 mt-2">AI-Powered Narrative Generation</p>
+        {/* HEADER */}
+        <header className="text-center pt-8 pb-4">
+          <div className="inline-block relative">
+            <div className="absolute inset-0 bg-blue-500 blur-[40px] opacity-20"></div>
+            <h1 className="relative text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-500 tracking-tight">
+              EchoQuill
+            </h1>
+          </div>
+          <p className="text-gray-400 mt-3 text-lg font-medium">
+            AI-Powered Narrative Generation
+          </p>
         </header>
 
-        {/* --- UI VIEW 1: THE IDEA FORM --- */}
+        {/* VIEW 1: THE IDEA FORM */}
         {!outline && (
           <form
             onSubmit={handleGenerateOutline}
-            className="bg-gray-800 p-6 rounded-lg shadow-lg space-y-4"
+            className="bg-white/[0.03] backdrop-blur-xl border border-white/10 p-8 rounded-3xl shadow-2xl space-y-6"
           >
-            <h2 className="text-xl font-semibold border-b border-gray-700 pb-2">
-              1. Pitch Your Idea
+            <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+              <span className="bg-blue-500/20 text-blue-400 p-2 rounded-lg text-sm">
+                1
+              </span>
+              Pitch Your Idea
             </h2>
 
-            <div className="grid grid-cols-2 gap-4">
-              <input
-                name="genre"
-                placeholder="Genre (e.g. Cyberpunk Noir)"
-                value={formData.genre}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <input
+                  name="genre"
+                  placeholder="Genre (e.g. Cyberpunk Noir)"
+                  value={formData.genre}
+                  onChange={handleIdeaChange}
+                  className={inputStyles}
+                  required
+                />
+              </div>
+              <div>
+                <input
+                  name="tone"
+                  placeholder="Tone (e.g. Gritty, Atmospheric)"
+                  value={formData.tone}
+                  onChange={handleIdeaChange}
+                  className={inputStyles}
+                  required
+                />
+              </div>
+              <div>
+                <input
+                  name="protagonist"
+                  placeholder="Protagonist (e.g. Burned-out hacker)"
+                  value={formData.protagonist}
+                  onChange={handleIdeaChange}
+                  className={inputStyles}
+                  required
+                />
+              </div>
+              <div>
+                <input
+                  name="setting"
+                  placeholder="Setting (e.g. Neo-Tokyo)"
+                  value={formData.setting}
+                  onChange={handleIdeaChange}
+                  className={inputStyles}
+                  required
+                />
+              </div>
+            </div>
+
+            <div>
+              <textarea
+                name="premise"
+                placeholder="Core Premise (What happens?)"
+                value={formData.premise}
                 onChange={handleIdeaChange}
-                className="w-full bg-gray-700 p-3 rounded text-white"
-                required
-              />
-              <input
-                name="tone"
-                placeholder="Tone (e.g. Gritty, Atmospheric)"
-                value={formData.tone}
-                onChange={handleIdeaChange}
-                className="w-full bg-gray-700 p-3 rounded text-white"
-                required
-              />
-              <input
-                name="protagonist"
-                placeholder="Protagonist (e.g. Burned-out hacker)"
-                value={formData.protagonist}
-                onChange={handleIdeaChange}
-                className="w-full bg-gray-700 p-3 rounded text-white"
-                required
-              />
-              <input
-                name="setting"
-                placeholder="Setting (e.g. Neo-Tokyo)"
-                value={formData.setting}
-                onChange={handleIdeaChange}
-                className="w-full bg-gray-700 p-3 rounded text-white"
+                className={`${inputStyles} h-32 resize-none`}
                 required
               />
             </div>
-
-            <textarea
-              name="premise"
-              placeholder="Core Premise (What happens?)"
-              value={formData.premise}
-              onChange={handleIdeaChange}
-              className="w-full bg-gray-700 p-3 rounded text-white h-24"
-              required
-            />
 
             <button
               type="submit"
               disabled={isGeneratingOutline}
-              className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded transition-colors disabled:opacity-50"
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:-translate-y-1 shadow-lg shadow-blue-500/25 disabled:opacity-50 disabled:transform-none mt-4"
             >
-              {isGeneratingOutline
-                ? "Drafting Blueprint..."
-                : "Generate Outline"}
+              {isGeneratingOutline ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Drafting Blueprint...
+                </span>
+              ) : (
+                "Generate Outline"
+              )}
             </button>
           </form>
         )}
 
-        {/* --- UI VIEW 2: THE EDITABLE OUTLINE --- */}
+        {/* VIEW 2: THE EDITABLE OUTLINE */}
         {outline && !storyText && !isStreaming && (
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg space-y-4 border border-blue-500/30">
-            <h2 className="text-xl font-semibold text-blue-400 border-b border-gray-700 pb-2">
-              2. Review & Edit Blueprint
+          <div className="bg-white/[0.03] backdrop-blur-xl border border-blue-500/30 p-8 rounded-3xl shadow-[0_0_40px_-15px_rgba(59,130,246,0.3)] space-y-2 animate-fade-in-up">
+            <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+              <span className="bg-purple-500/20 text-purple-400 p-2 rounded-lg text-sm">
+                2
+              </span>
+              Review & Edit Blueprint
             </h2>
-            <p className="text-sm text-gray-400 mb-4">
+            <p className="text-gray-400 mb-6 pb-4 border-b border-white/10">
               Tweak the AI's plan before generating the full prose.
             </p>
 
-            <div className="space-y-3">
-              <div>
-                <label className="text-xs text-gray-400 uppercase">Title</label>
-                <input
-                  name="title"
-                  value={outline.title}
-                  onChange={handleOutlineChange}
-                  className="w-full bg-gray-700 p-2 rounded text-white font-bold"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-gray-400 uppercase">
-                  The Hook
-                </label>
-                <textarea
-                  name="hook"
-                  value={outline.hook}
-                  onChange={handleOutlineChange}
-                  className="w-full bg-gray-700 p-2 rounded text-white text-sm"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-gray-400 uppercase">
-                  Act 1: Setup
-                </label>
-                <textarea
-                  name="act_1_setup"
-                  value={outline.act_1_setup}
-                  onChange={handleOutlineChange}
-                  className="w-full bg-gray-700 p-2 rounded text-white text-sm"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-gray-400 uppercase">
-                  Act 2: Confrontation
-                </label>
-                <textarea
-                  name="act_2_confrontation"
-                  value={outline.act_2_confrontation}
-                  onChange={handleOutlineChange}
-                  className="w-full bg-gray-700 p-2 rounded text-white text-sm h-20"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-gray-400 uppercase">
-                  Act 3: Resolution
-                </label>
-                <textarea
-                  name="act_3_resolution"
-                  value={outline.act_3_resolution}
-                  onChange={handleOutlineChange}
-                  className="w-full bg-gray-700 p-2 rounded text-white text-sm"
-                />
-              </div>
+            <div className="space-y-1">
+              <label className={labelStyles}>Title</label>
+              <input
+                name="title"
+                value={outline.title}
+                onChange={handleOutlineChange}
+                className={`${inputStyles} text-lg font-bold text-blue-100`}
+              />
+
+              <label className={labelStyles}>The Hook</label>
+              <textarea
+                name="hook"
+                value={outline.hook}
+                onChange={handleOutlineChange}
+                className={`${inputStyles} h-20 resize-none`}
+              />
+
+              <label className={labelStyles}>Act 1: Setup</label>
+              <textarea
+                name="act_1_setup"
+                value={outline.act_1_setup}
+                onChange={handleOutlineChange}
+                className={`${inputStyles} h-24 resize-none`}
+              />
+
+              <label className={labelStyles}>Act 2: Confrontation</label>
+              <textarea
+                name="act_2_confrontation"
+                value={outline.act_2_confrontation}
+                onChange={handleOutlineChange}
+                className={`${inputStyles} h-32 resize-none`}
+              />
+
+              <label className={labelStyles}>Act 3: Resolution</label>
+              <textarea
+                name="act_3_resolution"
+                value={outline.act_3_resolution}
+                onChange={handleOutlineChange}
+                className={`${inputStyles} h-24 resize-none`}
+              />
             </div>
 
-            <div className="flex gap-4 pt-4">
+            <div className="flex gap-4 pt-6">
               <button
                 onClick={handleStartOver}
-                className="w-1/3 bg-gray-600 hover:bg-gray-500 text-white font-bold py-3 px-4 rounded transition-colors"
+                className="w-1/3 bg-white/5 hover:bg-white/10 border border-white/10 text-white font-bold py-4 px-6 rounded-xl transition-all"
               >
                 Scrap It
               </button>
               <button
                 onClick={handleStreamStory}
-                className="w-2/3 bg-purple-600 hover:bg-purple-500 text-white font-bold py-3 px-4 rounded transition-colors"
+                className="w-2/3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:-translate-y-1 shadow-lg shadow-purple-500/25"
               >
                 Confirm & Write Story
               </button>
@@ -262,28 +275,42 @@ function App() {
           </div>
         )}
 
-        {/* --- UI VIEW 3: THE LIVE DRAFT (SSE STREAM) --- */}
+        {/* VIEW 3: THE LIVE DRAFT */}
         {(storyText || isStreaming) && (
-          <div className="bg-gray-800 p-6 rounded-lg shadow-lg space-y-4">
-            <div className="flex justify-between items-center border-b border-gray-700 pb-2">
-              <h2 className="text-xl font-semibold text-purple-400">
-                3. Live Draft
+          <div className="bg-[#0b1120] border border-white/10 p-8 md:p-12 rounded-3xl shadow-2xl relative overflow-hidden">
+            {/* Ambient Background Glow inside the reader */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-32 bg-purple-500/10 blur-[60px] pointer-events-none"></div>
+
+            <div className="flex justify-between items-center border-b border-white/10 pb-6 mb-8 relative z-10">
+              <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                <span className="bg-pink-500/20 text-pink-400 p-2 rounded-lg text-sm">
+                  3
+                </span>
+                Live Draft
               </h2>
               {isStreaming && (
-                <span className="text-purple-400 text-sm animate-pulse">
+                <div className="flex items-center gap-2 px-4 py-1.5 bg-purple-500/20 text-purple-300 rounded-full text-sm font-medium border border-purple-500/30">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+                  </span>
                   Streaming...
-                </span>
+                </div>
               )}
             </div>
 
-            <div className="prose prose-invert max-w-none prose-p:leading-relaxed">
+            {/* Enhanced Typography for Reading */}
+            <div className="prose prose-invert prose-lg max-w-none prose-p:leading-relaxed prose-p:text-gray-300 prose-headings:text-white prose-a:text-blue-400 relative z-10">
               <ReactMarkdown>{storyText}</ReactMarkdown>
+              {isStreaming && (
+                <span className="inline-block w-2 h-5 bg-purple-500 animate-pulse ml-1 align-middle"></span>
+              )}
             </div>
 
             {!isStreaming && storyText && (
               <button
                 onClick={handleStartOver}
-                className="mt-8 w-full bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-4 rounded transition-colors"
+                className="mt-12 w-full bg-white/5 hover:bg-white/10 border border-white/10 text-gray-300 hover:text-white font-bold py-4 px-6 rounded-xl transition-all"
               >
                 Start a New Story
               </button>
