@@ -36,7 +36,7 @@ import {
 
 const API_BASE_URL = "https://echo-quill-1.onrender.com";
 
-// Typography Profiles for Instant Font Switching
+// Typography Profiles
 const FONT_STYLES = [
   {
     id: "space-grotesk",
@@ -70,9 +70,9 @@ const THEME_PALETTES = [
     id: "cyan-rose",
     name: "Cyber Cyan & Phoenix Rose",
     tagline: "Holographic Neo-Tokyo // High Contrast",
-    c1: "#06b6d4", // Laser Cyan (Stage 1)
-    c2: "#6366f1", // Quantum Indigo (Stage 2)
-    c3: "#f43f5e", // Phoenix Rose (Stage 3)
+    c1: "#06b6d4",
+    c2: "#6366f1",
+    c3: "#f43f5e",
     bgBase: "#02040b",
     auroraTop: "rgba(6, 182, 212, 0.08)",
     auroraLeft: "rgba(6, 182, 212, 0.06)",
@@ -84,9 +84,9 @@ const THEME_PALETTES = [
     id: "solar-amber",
     name: "Solar Amber & Cyber Rust",
     tagline: "Blade Runner 2049 & Arrakis Dust",
-    c1: "#f59e0b", // Solar Amber (Stage 1)
-    c2: "#ea580c", // Cyber Rust (Stage 2)
-    c3: "#e11d48", // Sunfire Crimson (Stage 3)
+    c1: "#f59e0b",
+    c2: "#ea580c",
+    c3: "#e11d48",
     bgBase: "#080402",
     auroraTop: "rgba(245, 158, 11, 0.08)",
     auroraLeft: "rgba(245, 158, 11, 0.06)",
@@ -98,9 +98,9 @@ const THEME_PALETTES = [
     id: "emerald-matrix",
     name: "Emerald Matrix & Bioluminescence",
     tagline: "Deep Neural Biosphere & Alien Core",
-    c1: "#10b981", // Emerald Neon (Stage 1)
-    c2: "#0d9488", // Quantum Teal (Stage 2)
-    c3: "#84cc16", // Lime Energy (Stage 3)
+    c1: "#10b981",
+    c2: "#0d9488",
+    c3: "#84cc16",
     bgBase: "#010804",
     auroraTop: "rgba(16, 185, 129, 0.08)",
     auroraLeft: "rgba(16, 185, 129, 0.06)",
@@ -112,9 +112,9 @@ const THEME_PALETTES = [
     id: "cosmic-violet",
     name: "Cosmic Violet & Astral Azure",
     tagline: "Deep Space Nebula & Hyperspace",
-    c1: "#8b5cf6", // Electric Violet (Stage 1)
-    c2: "#3b82f6", // Astral Azure (Stage 2)
-    c3: "#d946ef", // Magenta Core (Stage 3)
+    c1: "#8b5cf6",
+    c2: "#3b82f6",
+    c3: "#d946ef",
     bgBase: "#05020c",
     auroraTop: "rgba(139, 92, 246, 0.08)",
     auroraLeft: "rgba(139, 92, 246, 0.06)",
@@ -126,9 +126,9 @@ const THEME_PALETTES = [
     id: "crimson-abyss",
     name: "Crimson Abyss & Nightshade",
     tagline: "Dark Gothic Thriller & Bloodlines",
-    c1: "#ef4444", // Scarlet Blood (Stage 1)
-    c2: "#a855f7", // Nightshade Violet (Stage 2)
-    c3: "#f43f5e", // Neon Coral (Stage 3)
+    c1: "#ef4444",
+    c2: "#a855f7",
+    c3: "#f43f5e",
     bgBase: "#090103",
     auroraTop: "rgba(239, 68, 68, 0.08)",
     auroraLeft: "rgba(239, 68, 68, 0.06)",
@@ -140,9 +140,9 @@ const THEME_PALETTES = [
     id: "arctic-frost",
     name: "Arctic Glacial & Frost Blue",
     tagline: "Sub-Zero Cryo Array & Pure Quartz",
-    c1: "#38bdf8", // Glacial Sky (Stage 1)
-    c2: "#6366f1", // Deep Periwinkle (Stage 2)
-    c3: "#2dd4bf", // Frost Turquoise (Stage 3)
+    c1: "#38bdf8",
+    c2: "#6366f1",
+    c3: "#2dd4bf",
     bgBase: "#02050e",
     auroraTop: "rgba(56, 189, 248, 0.08)",
     auroraLeft: "rgba(56, 189, 248, 0.06)",
@@ -154,9 +154,9 @@ const THEME_PALETTES = [
     id: "vaporwave-sunset",
     name: "Vaporwave Sunset & Retro Synth",
     tagline: "Outrun Grid & Miami 1984 Mirage",
-    c1: "#ec4899", // Neon Magenta (Stage 1)
-    c2: "#8b5cf6", // Dusk Purple (Stage 2)
-    c3: "#06b6d4", // Electric Cyan (Stage 3)
+    c1: "#ec4899",
+    c2: "#8b5cf6",
+    c3: "#06b6d4",
     bgBase: "#060109",
     auroraTop: "rgba(236, 72, 153, 0.08)",
     auroraLeft: "rgba(236, 72, 153, 0.06)",
@@ -168,9 +168,9 @@ const THEME_PALETTES = [
     id: "monolith-gold",
     name: "Imperial Gold & Solar Bronze",
     tagline: "Royal Grimoire & High-Fantasy Sovereign",
-    c1: "#eab308", // Imperial Gold (Stage 1)
-    c2: "#f59e0b", // Solar Ochre (Stage 2)
-    c3: "#d97706", // Burnished Bronze (Stage 3)
+    c1: "#eab308",
+    c2: "#f59e0b",
+    c3: "#d97706",
     bgBase: "#060502",
     auroraTop: "rgba(234, 179, 8, 0.08)",
     auroraLeft: "rgba(234, 179, 8, 0.06)",
@@ -259,6 +259,9 @@ export default function App() {
 
   // Pipeline Navigation State (1: Pitch, 2: Blueprint, 3: Chronicle)
   const [stage, setStage] = useState(1);
+
+  // Responsive Mobile Tab for Workspace (<lg viewports)
+  const [mobileTab, setMobileTab] = useState("blueprint"); // "blueprint" | "chronicle"
 
   // Stage 1: Form state
   const [formData, setFormData] = useState({
@@ -374,6 +377,7 @@ export default function App() {
           act_3_resolution: `Cornered at the apex of the central cooling tower, the protagonist must choose between purging his own identity to broadcast the truth or becoming another erased ghost in the void.`
         });
         setStage(2);
+        setMobileTab("blueprint");
         setIsGeneratingOutline(false);
       }, 850);
       return;
@@ -393,6 +397,7 @@ export default function App() {
       const data = await response.json();
       setOutline(data);
       setStage(2);
+      setMobileTab("blueprint");
     } catch (error) {
       console.warn(
         "Backend API not reachable, switching to neural simulation mode:",
@@ -409,6 +414,7 @@ export default function App() {
         "Remote server offline/cold starting. Activated local neural simulation mode."
       );
       setStage(2);
+      setMobileTab("blueprint");
     } finally {
       setIsGeneratingOutline(false);
     }
@@ -418,6 +424,7 @@ export default function App() {
   const handleStreamStory = async () => {
     playCyberBlip(1400, 0.1);
     setStage(3);
+    setMobileTab("chronicle"); // Automatically switch mobile view to reader!
     setIsStreaming(true);
     setStoryText("");
     setStreamError(null);
@@ -497,6 +504,7 @@ export default function App() {
     setStoryText("");
     setIsStreaming(false);
     setStreamError(null);
+    setMobileTab("blueprint");
   };
 
   const handleCopyStory = () => {
@@ -537,7 +545,7 @@ export default function App() {
     : 0;
   const estimatedReadMinutes = Math.max(1, Math.ceil(wordCount / 200));
 
-  // CSS variables for uniform, harmonious gradient flow and typography
+  // CSS variables
   const themeVars = {
     "--c1": currentTheme.c1,
     "--c2": currentTheme.c2,
@@ -553,7 +561,6 @@ export default function App() {
     fontFamily: currentFont.uiFont
   };
 
-  // Harmonious full-title gradient
   const titleGradient = {
     backgroundImage: `linear-gradient(90deg, #ffffff 0%, #f1f5f9 22%, ${currentTheme.c1} 62%, ${currentTheme.c2} 100%)`,
     WebkitBackgroundClip: "text",
@@ -574,7 +581,7 @@ export default function App() {
   return (
     <div
       style={themeVars}
-      className="min-h-screen text-slate-100 selection:bg-white/20 selection:text-white relative overflow-x-hidden pb-24 transition-colors duration-700"
+      className="min-h-screen text-slate-100 selection:bg-white/20 selection:text-white relative overflow-x-hidden pb-16 sm:pb-24 transition-colors duration-700"
     >
       {/* Background Cyber Grid */}
       <div className="fixed inset-0 cyber-grid opacity-35 pointer-events-none z-0" />
@@ -582,62 +589,58 @@ export default function App() {
       {/* Symmetrical, Diffuse Ambient Atmosphere */}
       <div className="aurora-canopy" />
 
-      {/* Top Glassmorphic Navigation Bar */}
-      <header className="relative z-20 border-b border-white/[0.08] bg-black/60 backdrop-blur-xl sticky top-0 px-4 md:px-8 py-3.5">
-        <div className="max-w-[1520px] mx-auto flex items-center justify-between gap-4">
-          {/* Logo & Subtitle */}
-          <div className="flex items-center gap-3">
-            <div
-              className="relative group cursor-pointer"
-              onClick={() => setStage(1)}
-              title="Return to Pitch"
-            >
-              <div
-                style={{
-                  background: `linear-gradient(135deg, ${currentTheme.c1}, ${currentTheme.c2}, ${currentTheme.c3})`
-                }}
-                className="w-10 h-10 rounded-xl p-[1px] shadow-lg transition-transform duration-300 group-hover:scale-105"
+      {/* Top Glassmorphic Navigation Bar - Fully Responsive */}
+      <header className="relative z-20 border-b border-white/[0.08] bg-black/70 backdrop-blur-xl sticky top-0 px-3 sm:px-6 md:px-8 py-2.5 sm:py-3.5">
+        <div className="max-w-[1520px] mx-auto flex items-center justify-between gap-2 sm:gap-4">
+          {/* Brand Title & Subtitle (Logo icon removed as requested) */}
+          <div
+            className="cursor-pointer flex-shrink-0"
+            onClick={() => setStage(1)}
+            title="Return to Pitch"
+          >
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span
+                style={logoGradient}
+                className="text-lg sm:text-2xl font-black tracking-tight"
               >
-                <div className="w-full h-full bg-[#030611] rounded-xl flex items-center justify-center">
-                  <PenTool className="w-4 h-4 text-white transform -rotate-12 group-hover:rotate-0 transition-transform duration-300" />
-                </div>
-              </div>
+                ECHOQUILL
+              </span>
+              <span
+                style={{
+                  borderColor: `${currentTheme.c1}35`,
+                  color: currentTheme.c1
+                }}
+                className="text-[9px] sm:text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/[0.04] border font-bold tracking-wider"
+              >
+                v3.4
+              </span>
             </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span
-                  style={logoGradient}
-                  className="text-xl sm:text-2xl font-black tracking-tight"
-                >
-                  ECHOQUILL
-                </span>
-                <span
-                  style={{
-                    borderColor: `${currentTheme.c1}35`,
-                    color: currentTheme.c1
-                  }}
-                  className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/[0.04] border font-bold tracking-wider"
-                >
-                  v3.4
-                </span>
-              </div>
-              <p className="text-[10px] font-mono tracking-[0.24em] text-slate-400 uppercase hidden sm:block">
-                Cinematic Narrative Engine // Void & Cyber-Glass
-              </p>
-            </div>
+            <p className="text-[10px] font-mono tracking-[0.22em] text-slate-400 uppercase hidden md:block">
+              Cinematic Narrative Engine // Void & Cyber-Glass
+            </p>
           </div>
 
-          {/* Controls: Font Switcher, Palette Picker, Sandbox Toggle, Audio */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          {/* Controls: Responsive Cluster */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5">
+            {/* Core Online Beacon - Visible on ALL screen sizes */}
+            <div className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] sm:text-xs font-mono font-semibold flex-shrink-0">
+              <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 sm:h-2 sm:w-2 bg-emerald-500"></span>
+              </span>
+              <span>ONLINE</span>
+            </div>
+
             {/* Font Style Toggle Button */}
             <button
               onClick={handleCycleFont}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono border border-white/[0.14] bg-white/[0.04] hover:bg-white/[0.09] text-slate-200 hover:text-white transition-all cursor-pointer shadow-lg hover:border-white/30"
+              className="flex items-center gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-mono border border-white/[0.14] bg-white/[0.04] hover:bg-white/[0.09] text-slate-200 hover:text-white transition-all cursor-pointer shadow-lg hover:border-white/30"
               title={`Switch Font Style (Current: ${currentFont.name})`}
             >
-              <Type className="w-3.5 h-3.5 text-slate-300" />
-              <span className="font-semibold text-[11px] tracking-wider">
-                FONT: {currentFont.shortName.toUpperCase()}
+              <Type className="w-3.5 h-3.5 text-slate-300 flex-shrink-0" />
+              <span className="font-semibold text-[10px] sm:text-[11px] tracking-wider">
+                <span className="hidden sm:inline">FONT: </span>
+                {currentFont.shortName.toUpperCase()}
               </span>
             </button>
 
@@ -647,31 +650,30 @@ export default function App() {
                 playCyberBlip(1200, 0.05);
                 setShowThemeModal(true);
               }}
-              className="flex items-center gap-2.5 px-3 py-1.5 rounded-full text-xs font-mono border border-white/[0.14] bg-white/[0.04] hover:bg-white/[0.09] text-slate-200 hover:text-white transition-all cursor-pointer shadow-lg hover:border-white/30"
+              className="flex items-center gap-1.5 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-mono border border-white/[0.14] bg-white/[0.04] hover:bg-white/[0.09] text-slate-200 hover:text-white transition-all cursor-pointer shadow-lg hover:border-white/30"
               title="Open Color Palette Gallery"
             >
               <Palette
-                className="w-3.5 h-3.5"
+                className="w-3.5 h-3.5 flex-shrink-0"
                 style={{ color: currentTheme.c1 }}
               />
-              <div className="flex items-center gap-2">
-                {/* 3-Stop Uniform Gradient Pill Preview */}
+              <div className="flex items-center gap-1.5">
                 <div
                   style={{
                     background: `linear-gradient(90deg, ${currentTheme.c1}, ${currentTheme.c2}, ${currentTheme.c3})`
                   }}
-                  className="w-10 h-2.5 rounded-full shadow-inner border border-black/40"
+                  className="w-6 sm:w-8 h-2 sm:h-2.5 rounded-full shadow-inner border border-black/40"
                 />
-                <span className="hidden md:inline font-bold text-[11px] uppercase tracking-wider">
+                <span className="hidden lg:inline font-bold text-[11px] uppercase tracking-wider">
                   {currentTheme.name.split(" ")[0]}
                 </span>
               </div>
             </button>
 
-            {/* Quick Next Theme Cycle */}
+            {/* Quick Next Theme Cycle (Hidden on small screens) */}
             <button
               onClick={handleCycleTheme}
-              className="hidden sm:flex items-center px-2 py-1.5 rounded-lg text-[11px] font-mono text-slate-400 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] transition-colors cursor-pointer"
+              className="hidden md:flex items-center px-2 py-1.5 rounded-lg text-[11px] font-mono text-slate-400 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] transition-colors cursor-pointer"
               title="Next color palette"
             >
               Cycle
@@ -694,11 +696,11 @@ export default function App() {
                   : "rgba(255,255,255,0.1)",
                 color: useSimulationMode ? currentTheme.c1 : "#94a3b8"
               }}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-mono border bg-white/[0.02] transition-all cursor-pointer"
+              className="flex items-center gap-1 px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-full text-xs font-mono border bg-white/[0.02] transition-all cursor-pointer"
             >
-              <Cpu className="w-3.5 h-3.5" />
-              <span className="hidden lg:inline text-[11px] font-semibold">
-                {useSimulationMode ? "SANDBOX MODE" : "LIVE BACKEND"}
+              <Cpu className="w-3.5 h-3.5 flex-shrink-0" />
+              <span className="hidden sm:inline text-[10px] sm:text-[11px] font-semibold">
+                {useSimulationMode ? "DEMO" : "LIVE"}
               </span>
             </button>
 
@@ -708,7 +710,7 @@ export default function App() {
                 setSoundEnabled(!soundEnabled);
                 if (!soundEnabled) playCyberBlip(1200, 0.05);
               }}
-              className="p-1.5 rounded-lg bg-white/[0.03] border border-white/[0.08] text-slate-400 hover:text-white hover:border-white/20 transition-colors cursor-pointer"
+              className="p-1 sm:p-1.5 rounded-lg bg-white/[0.03] border border-white/[0.08] text-slate-400 hover:text-white hover:border-white/20 transition-colors cursor-pointer"
               title={
                 soundEnabled
                   ? "Mute Cyber Synthesizer"
@@ -717,22 +719,13 @@ export default function App() {
             >
               {soundEnabled ? (
                 <Volume2
-                  className="w-4 h-4"
+                  className="w-3.5 h-3.5 sm:w-4 sm:h-4"
                   style={{ color: currentTheme.c1 }}
                 />
               ) : (
-                <VolumeX className="w-4 h-4" />
+                <VolumeX className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               )}
             </button>
-
-            {/* Core Online Beacon */}
-            <div className="hidden xl:flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-              </span>
-              ONLINE
-            </div>
           </div>
         </div>
 
@@ -741,54 +734,54 @@ export default function App() {
           style={{
             background: `linear-gradient(90deg, transparent 5%, ${currentTheme.c1} 25%, ${currentTheme.c2} 50%, ${currentTheme.c3} 75%, transparent 95%)`
           }}
-          className="h-[1px] w-full opacity-40"
+          className="h-[1px] w-full opacity-40 mt-1"
         />
       </header>
 
-      {/* THEME GALLERY MODAL */}
+      {/* THEME GALLERY MODAL - Fully Responsive */}
       {showThemeModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in-up">
-          <div className="cyber-glass-uniform rounded-3xl p-6 sm:p-8 max-w-3xl w-full shadow-2xl relative max-h-[90vh] overflow-y-auto scrollbar-cyber border border-white/[0.14]">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-fade-in-up">
+          <div className="cyber-glass-uniform rounded-2xl sm:rounded-3xl p-4 sm:p-8 max-w-3xl w-full shadow-2xl relative max-h-[88vh] overflow-y-auto scrollbar-cyber border border-white/[0.14]">
             <div
               style={{
                 background: `linear-gradient(90deg, ${currentTheme.c1}, ${currentTheme.c2}, ${currentTheme.c3})`
               }}
-              className="h-[2px] w-full rounded-full mb-6 opacity-70"
+              className="h-[2px] w-full rounded-full mb-4 sm:mb-6 opacity-70"
             />
 
-            <div className="flex items-center justify-between pb-4 border-b border-white/[0.08] mb-6">
-              <div className="flex items-center gap-2.5">
-                <div className="w-9 h-9 rounded-xl bg-white/[0.05] border border-white/[0.1] flex items-center justify-center text-white">
-                  <Palette className="w-5 h-5" />
+            <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-white/[0.08] mb-4 sm:mb-6">
+              <div className="flex items-center gap-2 sm:gap-2.5">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-white/[0.05] border border-white/[0.1] flex items-center justify-center text-white">
+                  <Palette className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">
-                    Uniform Cinematic Color Palettes
+                  <h3 className="text-sm sm:text-base font-bold text-white">
+                    Uniform Cinematic Palettes
                   </h3>
-                  <p className="text-xs font-mono text-slate-400">
-                    Each palette distributes harmoniously without center hotspots
+                  <p className="text-[10px] sm:text-xs font-mono text-slate-400">
+                    Symmetrical distribution across all 3 pipeline stages
                   </p>
                 </div>
               </div>
               <button
                 onClick={() => setShowThemeModal(false)}
-                className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white transition-colors cursor-pointer"
+                className="p-1.5 sm:p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white transition-colors cursor-pointer"
               >
-                <X className="w-5 h-5" />
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
 
-            {/* Grid of 8 Handcrafted Palettes with Full Gradient Bars */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Grid of 8 Handcrafted Palettes */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-4">
               {THEME_PALETTES.map((t, index) => {
                 const isSelected = index === themeIndex;
                 return (
                   <button
                     key={t.id}
                     onClick={() => handleSelectTheme(index)}
-                    className={`text-left p-4 rounded-2xl border transition-all duration-300 cursor-pointer relative overflow-hidden group ${
+                    className={`text-left p-3 sm:p-4 rounded-xl sm:rounded-2xl border transition-all duration-300 cursor-pointer relative overflow-hidden group ${
                       isSelected
-                        ? "bg-white/[0.08] border-white/50 shadow-[0_0_25px_rgba(255,255,255,0.15)]"
+                        ? "bg-white/[0.08] border-white/50 shadow-[0_0_20px_rgba(255,255,255,0.15)]"
                         : "bg-white/[0.02] hover:bg-white/[0.06] border-white/[0.08] hover:border-white/25"
                     }`}
                   >
@@ -797,16 +790,16 @@ export default function App() {
                       style={{
                         background: `linear-gradient(90deg, ${t.c1} 0%, ${t.c2} 50%, ${t.c3} 100%)`
                       }}
-                      className="h-2.5 w-full rounded-full shadow-sm mb-3"
+                      className="h-2 sm:h-2.5 w-full rounded-full shadow-sm mb-2 sm:mb-3"
                     />
 
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-bold text-white">
+                    <div className="flex items-center justify-between mb-0.5 sm:mb-1">
+                      <span className="text-xs sm:text-sm font-bold text-white">
                         {t.name}
                       </span>
                       {isSelected ? (
-                        <span className="flex items-center gap-1 text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
-                          <CheckCircle2 className="w-3 h-3" /> ACTIVE
+                        <span className="flex items-center gap-1 text-[9px] sm:text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 px-1.5 sm:px-2 py-0.5 rounded-full border border-emerald-500/20">
+                          <CheckCircle2 className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> ACTIVE
                         </span>
                       ) : (
                         <span className="text-[10px] font-mono text-slate-500 group-hover:text-slate-300">
@@ -814,7 +807,7 @@ export default function App() {
                         </span>
                       )}
                     </div>
-                    <div className="text-xs text-slate-400 font-mono">
+                    <div className="text-[11px] text-slate-400 font-mono truncate">
                       {t.tagline}
                     </div>
                   </button>
@@ -826,11 +819,11 @@ export default function App() {
       )}
 
       {/* Main Workspace Area */}
-      <main className="relative z-10 max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 pt-7 sm:pt-9">
-        {/* UNIFIED PROGRESS TRACKER */}
-        <section className="flex justify-center mb-8 sm:mb-11">
-          <div className="relative inline-flex items-center p-1.5 rounded-full cyber-glass-uniform border border-white/[0.1] shadow-xl">
-            {/* Step 1: Idea Pitch (Accent 1) */}
+      <main className="relative z-10 max-w-[1520px] mx-auto px-3 sm:px-6 lg:px-8 pt-5 sm:pt-8 md:pt-9">
+        {/* UNIFIED PROGRESS TRACKER - Responsive Scrollable Container */}
+        <section className="flex justify-center mb-6 sm:mb-10 w-full overflow-x-auto scrollbar-none px-1">
+          <div className="relative inline-flex items-center p-1 sm:p-1.5 rounded-full cyber-glass-uniform border border-white/[0.1] shadow-xl flex-nowrap">
+            {/* Step 1: Idea Pitch */}
             <button
               onClick={() => setStage(1)}
               style={
@@ -843,7 +836,7 @@ export default function App() {
                     }
                   : {}
               }
-              className={`flex items-center gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full font-mono text-xs font-semibold tracking-wider uppercase transition-all duration-300 border border-transparent cursor-pointer ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full font-mono text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all duration-300 border border-transparent cursor-pointer flex-shrink-0 ${
                 stage === 1 ? "" : "text-slate-400 hover:text-white"
               }`}
             >
@@ -856,11 +849,13 @@ export default function App() {
                       }
                     : { backgroundColor: "rgba(255,255,255,0.1)", color: "#cbd5e1" }
                 }
-                className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
+                className="w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] font-bold"
               >
                 1
               </span>
-              <span>01 Pitch</span>
+              <span>
+                <span className="hidden sm:inline">01 </span>Pitch
+              </span>
             </button>
 
             {/* Gradient Connector 1 -> 2 */}
@@ -868,12 +863,17 @@ export default function App() {
               style={{
                 background: `linear-gradient(90deg, ${currentTheme.c1}, ${currentTheme.c2})`
               }}
-              className="w-5 sm:w-8 h-[1.5px] opacity-50 mx-1"
+              className="w-3 sm:w-6 md:w-8 h-[1.5px] opacity-50 mx-0.5 sm:mx-1 flex-shrink-0"
             />
 
-            {/* Step 2: Story Architect (Accent 2) */}
+            {/* Step 2: Story Architect */}
             <button
-              onClick={() => outline && setStage(2)}
+              onClick={() => {
+                if (outline) {
+                  setStage(2);
+                  setMobileTab("blueprint");
+                }
+              }}
               disabled={!outline}
               style={
                 stage === 2
@@ -885,7 +885,7 @@ export default function App() {
                     }
                   : {}
               }
-              className={`flex items-center gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full font-mono text-xs font-semibold tracking-wider uppercase transition-all duration-300 border border-transparent ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full font-mono text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all duration-300 border border-transparent flex-shrink-0 ${
                 stage === 2
                   ? ""
                   : outline
@@ -904,11 +904,13 @@ export default function App() {
                     ? { backgroundColor: `${currentTheme.c2}25`, color: currentTheme.c2 }
                     : { backgroundColor: "rgba(255,255,255,0.05)", color: "#64748b" }
                 }
-                className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
+                className="w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] font-bold"
               >
                 2
               </span>
-              <span>02 Blueprint</span>
+              <span>
+                <span className="hidden sm:inline">02 </span>Blueprint
+              </span>
             </button>
 
             {/* Gradient Connector 2 -> 3 */}
@@ -916,12 +918,17 @@ export default function App() {
               style={{
                 background: `linear-gradient(90deg, ${currentTheme.c2}, ${currentTheme.c3})`
               }}
-              className="w-5 sm:w-8 h-[1.5px] opacity-50 mx-1"
+              className="w-3 sm:w-6 md:w-8 h-[1.5px] opacity-50 mx-0.5 sm:mx-1 flex-shrink-0"
             />
 
-            {/* Step 3: The Chronicle (Accent 3) */}
+            {/* Step 3: The Chronicle */}
             <button
-              onClick={() => (storyText || isStreaming) && setStage(3)}
+              onClick={() => {
+                if (storyText || isStreaming) {
+                  setStage(3);
+                  setMobileTab("chronicle");
+                }
+              }}
               disabled={!storyText && !isStreaming}
               style={
                 stage === 3
@@ -933,7 +940,7 @@ export default function App() {
                     }
                   : {}
               }
-              className={`flex items-center gap-2 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full font-mono text-xs font-semibold tracking-wider uppercase transition-all duration-300 border border-transparent ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-1.5 sm:py-2 rounded-full font-mono text-[11px] sm:text-xs font-semibold tracking-wider uppercase transition-all duration-300 border border-transparent flex-shrink-0 ${
                 stage === 3
                   ? ""
                   : storyText || isStreaming
@@ -952,11 +959,13 @@ export default function App() {
                     ? { backgroundColor: `${currentTheme.c3}25`, color: currentTheme.c3 }
                     : { backgroundColor: "rgba(255,255,255,0.05)", color: "#64748b" }
                 }
-                className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
+                className="w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center text-[9px] sm:text-[10px] font-bold"
               >
                 3
               </span>
-              <span>03 Chronicle</span>
+              <span>
+                <span className="hidden sm:inline">03 </span>Chronicle
+              </span>
             </button>
           </div>
         </section>
@@ -969,15 +978,15 @@ export default function App() {
               backgroundColor: `${currentTheme.c1}10`,
               color: currentTheme.c1
             }}
-            className="max-w-4xl mx-auto mb-6 p-3 rounded-xl border flex items-center justify-between text-xs font-mono animate-fade-in-up"
+            className="max-w-4xl mx-auto mb-5 sm:mb-6 p-2.5 sm:p-3 rounded-xl border flex items-center justify-between text-xs font-mono animate-fade-in-up"
           >
             <div className="flex items-center gap-2">
               <AlertCircle className="w-4 h-4 flex-shrink-0" />
-              <span>{streamError}</span>
+              <span className="truncate">{streamError}</span>
             </div>
             <button
               onClick={() => setStreamError(null)}
-              className="text-slate-400 hover:text-white px-2 py-0.5 rounded text-[11px] cursor-pointer"
+              className="text-slate-400 hover:text-white px-2 py-0.5 rounded text-[11px] cursor-pointer flex-shrink-0 ml-2"
             >
               Dismiss
             </button>
@@ -986,10 +995,10 @@ export default function App() {
 
         {/* STAGE 1: IDEA PITCH */}
         {stage === 1 && (
-          <div className="max-w-4xl mx-auto space-y-8 animate-fade-in-up">
-            {/* Hero Title with Upgraded Font Typography */}
-            <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-mono tracking-widest uppercase border border-white/[0.1] bg-white/[0.02] text-slate-300">
+          <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8 animate-fade-in-up">
+            {/* Hero Title */}
+            <div className="text-center space-y-2 sm:space-y-3">
+              <div className="inline-flex items-center gap-2 px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-mono tracking-widest uppercase border border-white/[0.1] bg-white/[0.02] text-slate-300">
                 <span
                   className="w-1.5 h-1.5 rounded-full animate-pulse"
                   style={{ backgroundColor: currentTheme.c1 }}
@@ -997,29 +1006,28 @@ export default function App() {
                 <span>Stage 01 // Narrative Ignition</span>
               </div>
 
-              {/* Seamless Full-Sentence Gradient Typography in Space Grotesk / Outfit */}
-              <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
+              <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight px-1">
                 <span style={titleGradient}>Pitch Your Cinematic Vision</span>
               </h1>
 
-              <p className="text-sm sm:text-base text-slate-400 max-w-xl mx-auto leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base text-slate-400 max-w-xl mx-auto leading-relaxed px-2">
                 Define the world, tone, and core catalyst. EchoQuill will synthesize a
                 multi-act blueprint ready for live prose orchestration.
               </p>
             </div>
 
-            {/* Inspiration Seed Chips */}
+            {/* Inspiration Seed Chips - Responsive Grid */}
             <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono text-slate-400 tracking-wider uppercase flex items-center gap-1.5">
+              <div className="flex items-center justify-between px-1">
+                <span className="text-[11px] sm:text-xs font-mono text-slate-400 tracking-wider uppercase flex items-center gap-1.5">
                   <Flame className="w-3.5 h-3.5" style={{ color: currentTheme.c1 }} />
                   Quick Neural Presets
                 </span>
-                <span className="text-[11px] font-mono text-slate-500">
-                  Click to pre-load scenario
+                <span className="text-[10px] sm:text-[11px] font-mono text-slate-500">
+                  Click to pre-load
                 </span>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-2.5">
                 {INSPIRATION_PRESETS.map((preset, index) => {
                   const chipColor =
                     index === 0
@@ -1034,7 +1042,7 @@ export default function App() {
                     <button
                       key={index}
                       onClick={() => handleApplyPreset(preset)}
-                      className="group relative p-3 text-left rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.08] hover:border-white/25 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
+                      className="group relative p-2.5 sm:p-3 text-left rounded-xl bg-white/[0.02] hover:bg-white/[0.05] border border-white/[0.08] hover:border-white/25 transition-all duration-300 transform hover:-translate-y-0.5 cursor-pointer"
                     >
                       <div
                         style={{ color: chipColor }}
@@ -1042,7 +1050,7 @@ export default function App() {
                       >
                         {preset.tag}
                       </div>
-                      <div className="text-[11px] text-slate-400 truncate mt-1 group-hover:text-slate-300">
+                      <div className="text-[11px] text-slate-400 truncate mt-0.5 group-hover:text-slate-300">
                         {preset.genre}
                       </div>
                     </button>
@@ -1051,12 +1059,12 @@ export default function App() {
               </div>
             </div>
 
-            {/* Form Card */}
+            {/* Form Card - Fully Responsive Padding & Fields */}
             <form
               onSubmit={handleGenerateOutline}
-              className="cyber-glass-uniform rounded-3xl p-6 sm:p-10 space-y-6 relative border border-white/[0.1] overflow-hidden"
+              className="cyber-glass-uniform rounded-2xl sm:rounded-3xl p-4 sm:p-7 md:p-10 space-y-4 sm:space-y-6 relative border border-white/[0.1] overflow-hidden"
             >
-              {/* Diffuse Full-Width Gradient Accent Line */}
+              {/* Diffuse Accent Line */}
               <div
                 style={{
                   background: `linear-gradient(90deg, transparent 0%, ${currentTheme.c1} 20%, ${currentTheme.c2} 50%, ${currentTheme.c3} 80%, transparent 100%)`
@@ -1064,10 +1072,10 @@ export default function App() {
                 className="absolute top-0 left-0 right-0 h-[2px] opacity-60"
               />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-5">
                 {/* Genre */}
-                <div className="space-y-2">
-                  <label className="block text-xs font-mono uppercase tracking-[0.18em] text-slate-300 font-semibold flex items-center gap-2">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="block text-[11px] sm:text-xs font-mono uppercase tracking-[0.18em] text-slate-300 font-semibold flex items-center gap-2">
                     <span
                       className="w-1.5 h-1.5 rounded-full"
                       style={{ backgroundColor: currentTheme.c1 }}
@@ -1080,14 +1088,14 @@ export default function App() {
                     onChange={handleIdeaChange}
                     placeholder="e.g. Cyberpunk Tech-Noir, Cosmic Dread"
                     style={{ outlineColor: currentTheme.c1 }}
-                    className="w-full bg-white/[0.03] border border-white/[0.08] focus:border-white/30 focus:bg-white/[0.06] rounded-xl px-4 py-3.5 text-white placeholder-slate-500 transition-all text-sm"
+                    className="w-full bg-white/[0.03] border border-white/[0.08] focus:border-white/30 focus:bg-white/[0.06] rounded-xl px-3.5 py-3 sm:px-4 sm:py-3.5 text-white placeholder-slate-500 transition-all text-xs sm:text-sm"
                     required
                   />
                 </div>
 
                 {/* Tone */}
-                <div className="space-y-2">
-                  <label className="block text-xs font-mono uppercase tracking-[0.18em] text-slate-300 font-semibold flex items-center gap-2">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="block text-[11px] sm:text-xs font-mono uppercase tracking-[0.18em] text-slate-300 font-semibold flex items-center gap-2">
                     <span
                       className="w-1.5 h-1.5 rounded-full"
                       style={{ backgroundColor: currentTheme.c2 }}
@@ -1100,14 +1108,14 @@ export default function App() {
                     onChange={handleIdeaChange}
                     placeholder="e.g. Gritty, Claustrophobic, Luminous"
                     style={{ outlineColor: currentTheme.c2 }}
-                    className="w-full bg-white/[0.03] border border-white/[0.08] focus:border-white/30 focus:bg-white/[0.06] rounded-xl px-4 py-3.5 text-white placeholder-slate-500 transition-all text-sm"
+                    className="w-full bg-white/[0.03] border border-white/[0.08] focus:border-white/30 focus:bg-white/[0.06] rounded-xl px-3.5 py-3 sm:px-4 sm:py-3.5 text-white placeholder-slate-500 transition-all text-xs sm:text-sm"
                     required
                   />
                 </div>
 
                 {/* Protagonist */}
-                <div className="space-y-2">
-                  <label className="block text-xs font-mono uppercase tracking-[0.18em] text-slate-300 font-semibold flex items-center gap-2">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="block text-[11px] sm:text-xs font-mono uppercase tracking-[0.18em] text-slate-300 font-semibold flex items-center gap-2">
                     <span
                       className="w-1.5 h-1.5 rounded-full"
                       style={{ backgroundColor: currentTheme.c3 }}
@@ -1120,14 +1128,14 @@ export default function App() {
                     onChange={handleIdeaChange}
                     placeholder="e.g. Burned-out memory extractor"
                     style={{ outlineColor: currentTheme.c3 }}
-                    className="w-full bg-white/[0.03] border border-white/[0.08] focus:border-white/30 focus:bg-white/[0.06] rounded-xl px-4 py-3.5 text-white placeholder-slate-500 transition-all text-sm"
+                    className="w-full bg-white/[0.03] border border-white/[0.08] focus:border-white/30 focus:bg-white/[0.06] rounded-xl px-3.5 py-3 sm:px-4 sm:py-3.5 text-white placeholder-slate-500 transition-all text-xs sm:text-sm"
                     required
                   />
                 </div>
 
                 {/* Setting */}
-                <div className="space-y-2">
-                  <label className="block text-xs font-mono uppercase tracking-[0.18em] text-slate-300 font-semibold flex items-center gap-2">
+                <div className="space-y-1.5 sm:space-y-2">
+                  <label className="block text-[11px] sm:text-xs font-mono uppercase tracking-[0.18em] text-slate-300 font-semibold flex items-center gap-2">
                     <span
                       className="w-1.5 h-1.5 rounded-full"
                       style={{ backgroundColor: currentTheme.c1 }}
@@ -1140,23 +1148,23 @@ export default function App() {
                     onChange={handleIdeaChange}
                     placeholder="e.g. Neo-Shinjuku Sub-Level 4"
                     style={{ outlineColor: currentTheme.c1 }}
-                    className="w-full bg-white/[0.03] border border-white/[0.08] focus:border-white/30 focus:bg-white/[0.06] rounded-xl px-4 py-3.5 text-white placeholder-slate-500 transition-all text-sm"
+                    className="w-full bg-white/[0.03] border border-white/[0.08] focus:border-white/30 focus:bg-white/[0.06] rounded-xl px-3.5 py-3 sm:px-4 sm:py-3.5 text-white placeholder-slate-500 transition-all text-xs sm:text-sm"
                     required
                   />
                 </div>
               </div>
 
               {/* Premise */}
-              <div className="space-y-2">
+              <div className="space-y-1.5 sm:space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="block text-xs font-mono uppercase tracking-[0.18em] text-slate-300 font-semibold flex items-center gap-2">
+                  <label className="block text-[11px] sm:text-xs font-mono uppercase tracking-[0.18em] text-slate-300 font-semibold flex items-center gap-2">
                     <span
                       className="w-1.5 h-1.5 rounded-full"
                       style={{ backgroundColor: currentTheme.c2 }}
                     />
                     Core Catalyst & Inciting Premise
                   </label>
-                  <span className="text-[11px] font-mono text-slate-500">
+                  <span className="text-[10px] sm:text-[11px] font-mono text-slate-500 hidden xs:inline">
                     What sets this tale into motion?
                   </span>
                 </div>
@@ -1167,7 +1175,7 @@ export default function App() {
                   rows={4}
                   placeholder="Describe the inciting spark, central conflict, or impossible dilemma..."
                   style={{ outlineColor: currentTheme.c2 }}
-                  className="w-full bg-white/[0.03] border border-white/[0.08] focus:border-white/30 focus:bg-white/[0.06] rounded-xl p-4 text-white placeholder-slate-500 transition-all text-sm resize-none"
+                  className="w-full bg-white/[0.03] border border-white/[0.08] focus:border-white/30 focus:bg-white/[0.06] rounded-xl p-3 sm:p-4 text-white placeholder-slate-500 transition-all text-xs sm:text-sm resize-none"
                   required
                 />
               </div>
@@ -1177,13 +1185,13 @@ export default function App() {
                 type="submit"
                 disabled={isGeneratingOutline}
                 style={fullGradientButton}
-                className="w-full relative group overflow-hidden text-white font-mono text-sm uppercase tracking-[0.18em] font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:transform-none cursor-pointer"
+                className="w-full relative group overflow-hidden text-white font-mono text-xs sm:text-sm uppercase tracking-wider sm:tracking-[0.18em] font-bold py-3.5 sm:py-4 px-4 sm:px-6 rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-50 disabled:transform-none cursor-pointer"
               >
-                <div className="relative z-10 flex items-center justify-center gap-3">
+                <div className="relative z-10 flex items-center justify-center gap-2 sm:gap-3">
                   {isGeneratingOutline ? (
                     <>
                       <svg
-                        className="animate-spin h-5 w-5 text-white"
+                        className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-white"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -1207,7 +1215,7 @@ export default function App() {
                   ) : (
                     <>
                       <span>SYNTHESIZE STORY BLUEPRINT</span>
-                      <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transform group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
                 </div>
@@ -1216,466 +1224,520 @@ export default function App() {
           </div>
         )}
 
-        {/* STAGES 2 & 3: WIDE SPLIT-PANE WORKSPACE */}
+        {/* STAGES 2 & 3: WIDE SPLIT-PANE WORKSPACE WITH RESPONSIVE MOBILE TABS */}
         {(stage === 2 || stage === 3) && outline && (
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-            {/* LEFT PANE: STORY ARCHITECT */}
-            <div className="lg:col-span-5 space-y-4 animate-fade-in-up">
-              <div className="cyber-glass-uniform rounded-3xl p-6 sm:p-7 border border-white/[0.1] relative overflow-hidden shadow-2xl">
-                {/* Left Pane Gradient Accent Bar */}
-                <div
-                  style={{
-                    background: `linear-gradient(90deg, ${currentTheme.c1} 0%, ${currentTheme.c2} 100%)`
-                  }}
-                  className="absolute top-0 left-0 right-0 h-[2px] opacity-70"
-                />
-
-                {/* Card Header */}
-                <div className="flex items-center justify-between pb-4 border-b border-white/[0.08] mb-5">
-                  <div className="flex items-center gap-2.5">
-                    <div
-                      style={{
-                        backgroundColor: `${currentTheme.c2}20`,
-                        borderColor: `${currentTheme.c2}40`,
-                        color: currentTheme.c2
-                      }}
-                      className="w-8 h-8 rounded-lg border flex items-center justify-center"
-                    >
-                      <Layers className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <h2 className="text-sm font-mono uppercase tracking-[0.2em] font-bold text-white">
-                        Stage 02 // Story Architect
-                      </h2>
-                      <p className="text-[11px] font-mono text-slate-400">
-                        Editable Outline & Narrative Beats
-                      </p>
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={handleResetToPitch}
-                    className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-mono text-slate-400 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] transition-colors cursor-pointer"
-                    title="Scrap and re-pitch"
-                  >
-                    <RotateCcw className="w-3 h-3" />
-                    <span className="hidden sm:inline">Re-Pitch</span>
-                  </button>
-                </div>
-
-                {/* Metadata Badges */}
-                <div className="flex flex-wrap gap-2 mb-5 pb-4 border-b border-white/[0.06]">
-                  <span
-                    style={{
-                      backgroundColor: `${currentTheme.c1}15`,
-                      borderColor: `${currentTheme.c1}35`,
-                      color: currentTheme.c1
-                    }}
-                    className="text-[11px] font-mono px-2.5 py-0.5 rounded-full border"
-                  >
-                    {formData.genre}
-                  </span>
-                  <span
-                    style={{
-                      backgroundColor: `${currentTheme.c2}15`,
-                      borderColor: `${currentTheme.c2}35`,
-                      color: currentTheme.c2
-                    }}
-                    className="text-[11px] font-mono px-2.5 py-0.5 rounded-full border"
-                  >
-                    {formData.tone}
-                  </span>
-                </div>
-
-                {/* Form Fields */}
-                <div className="space-y-4">
-                  {/* Title */}
-                  <div className="space-y-1.5">
-                    <label className="block text-[11px] font-mono uppercase tracking-[0.18em] text-slate-300 font-semibold">
-                      Story Title
-                    </label>
-                    <input
-                      name="title"
-                      value={outline.title || ""}
-                      onChange={handleOutlineChange}
-                      style={{ outlineColor: currentTheme.c1 }}
-                      className="w-full bg-white/[0.03] border border-white/[0.12] focus:bg-white/[0.05] rounded-xl px-3.5 py-2.5 text-white font-bold text-base transition-all"
-                    />
-                  </div>
-
-                  {/* Hook */}
-                  <div className="space-y-1.5">
-                    <label
-                      style={{ color: currentTheme.c1 }}
-                      className="block text-[11px] font-mono uppercase tracking-[0.18em] font-semibold flex items-center justify-between"
-                    >
-                      <span>The Hook // Opening Line</span>
-                      <span className="text-[10px] text-slate-500">Incident</span>
-                    </label>
-                    <textarea
-                      name="hook"
-                      value={outline.hook || ""}
-                      onChange={handleOutlineChange}
-                      rows={2}
-                      style={{ outlineColor: currentTheme.c1 }}
-                      className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl p-3 text-sm text-slate-200 transition-all resize-none"
-                    />
-                  </div>
-
-                  {/* Act 1 */}
-                  <div className="space-y-1.5">
-                    <label
-                      style={{ color: currentTheme.c2 }}
-                      className="block text-[11px] font-mono uppercase tracking-[0.18em] font-semibold"
-                    >
-                      Act I: Setup & Catalyst
-                    </label>
-                    <textarea
-                      name="act_1_setup"
-                      value={outline.act_1_setup || ""}
-                      onChange={handleOutlineChange}
-                      rows={3}
-                      style={{ outlineColor: currentTheme.c2 }}
-                      className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl p-3 text-sm text-slate-200 transition-all resize-none"
-                    />
-                  </div>
-
-                  {/* Act 2 */}
-                  <div className="space-y-1.5">
-                    <label
-                      style={{ color: currentTheme.c2 }}
-                      className="block text-[11px] font-mono uppercase tracking-[0.18em] font-semibold"
-                    >
-                      Act II: Confrontation & Midpoint Reversal
-                    </label>
-                    <textarea
-                      name="act_2_confrontation"
-                      value={outline.act_2_confrontation || ""}
-                      onChange={handleOutlineChange}
-                      rows={3}
-                      style={{ outlineColor: currentTheme.c2 }}
-                      className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl p-3 text-sm text-slate-200 transition-all resize-none"
-                    />
-                  </div>
-
-                  {/* Act 3 */}
-                  <div className="space-y-1.5">
-                    <label
-                      style={{ color: currentTheme.c3 }}
-                      className="block text-[11px] font-mono uppercase tracking-[0.18em] font-semibold"
-                    >
-                      Act III: Climax & Resolution
-                    </label>
-                    <textarea
-                      name="act_3_resolution"
-                      value={outline.act_3_resolution || ""}
-                      onChange={handleOutlineChange}
-                      rows={3}
-                      style={{ outlineColor: currentTheme.c3 }}
-                      className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl p-3 text-sm text-slate-200 transition-all resize-none"
-                    />
-                  </div>
-                </div>
-
-                {/* Primary Ignition Action */}
-                <div className="pt-6 space-y-3">
-                  <button
-                    onClick={handleStreamStory}
-                    disabled={isStreaming}
-                    style={fullGradientButton}
-                    className="w-full relative group overflow-hidden text-white font-mono text-xs uppercase tracking-[0.18em] font-bold py-3.5 px-5 rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg disabled:opacity-50 disabled:transform-none cursor-pointer"
-                  >
-                    <div className="flex items-center justify-center gap-2">
-                      {isStreaming ? (
-                        <>
-                          <Radio className="w-4 h-4 animate-spin text-white" />
-                          <span>TRANSMITTING PROSE...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Play className="w-4 h-4 text-white fill-white" />
-                          <span>
-                            {storyText
-                              ? "RE-BROADCAST CHRONICLE"
-                              : "INITIALIZE CHRONICLE STREAM"}
-                          </span>
-                        </>
-                      )}
-                    </div>
-                  </button>
-
-                  <div className="flex items-center justify-between text-[11px] font-mono text-slate-500 px-1">
-                    <span>Target Length: ~600-1200 words</span>
-                    <span>Format: Markdown Prose</span>
-                  </div>
-                </div>
+          <div>
+            {/* Mobile View Toggle Segmented Tabs (<lg only) */}
+            <div className="flex lg:hidden items-center justify-center mb-5">
+              <div className="inline-flex p-1 rounded-2xl bg-black/50 border border-white/[0.12] backdrop-blur-xl shadow-lg">
+                <button
+                  onClick={() => setMobileTab("blueprint")}
+                  style={
+                    mobileTab === "blueprint"
+                      ? {
+                          backgroundColor: `${currentTheme.c2}25`,
+                          borderColor: `${currentTheme.c2}50`,
+                          color: currentTheme.c2
+                        }
+                      : {}
+                  }
+                  className={`flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-mono font-semibold transition-all border border-transparent ${
+                    mobileTab === "blueprint" ? "" : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  <Layers className="w-3.5 h-3.5" />
+                  <span>Blueprint</span>
+                </button>
+                <button
+                  onClick={() => setMobileTab("chronicle")}
+                  style={
+                    mobileTab === "chronicle"
+                      ? {
+                          backgroundColor: `${currentTheme.c3}25`,
+                          borderColor: `${currentTheme.c3}50`,
+                          color: currentTheme.c3
+                        }
+                      : {}
+                  }
+                  className={`flex items-center gap-1.5 px-4 py-1.5 rounded-xl text-xs font-mono font-semibold transition-all border border-transparent ${
+                    mobileTab === "chronicle" ? "" : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>Chronicle</span>
+                  {isStreaming && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-ping ml-0.5" />
+                  )}
+                </button>
               </div>
             </div>
 
-            {/* RIGHT PANE: THE CHRONICLE */}
-            <div className="lg:col-span-7 space-y-4 animate-fade-in-up-delayed">
-              <div className="cyber-glass-uniform rounded-3xl border border-white/[0.1] p-6 sm:p-8 relative min-h-[580px] flex flex-col shadow-2xl overflow-hidden">
-                {/* Right Pane Gradient Accent Bar */}
-                <div
-                  style={{
-                    background: `linear-gradient(90deg, ${currentTheme.c2} 0%, ${currentTheme.c3} 100%)`
-                  }}
-                  className="absolute top-0 left-0 right-0 h-[2px] opacity-70"
-                />
+            {/* Split-Pane Grid Container */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
+              {/* LEFT PANE: STORY ARCHITECT (Editable Blueprint) */}
+              <div
+                className={`lg:col-span-5 space-y-4 animate-fade-in-up ${
+                  mobileTab === "blueprint" ? "block" : "hidden lg:block"
+                }`}
+              >
+                <div className="cyber-glass-uniform rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-7 border border-white/[0.1] relative overflow-hidden shadow-2xl">
+                  {/* Left Pane Gradient Accent Bar */}
+                  <div
+                    style={{
+                      background: `linear-gradient(90deg, ${currentTheme.c1} 0%, ${currentTheme.c2} 100%)`
+                    }}
+                    className="absolute top-0 left-0 right-0 h-[2px] opacity-70"
+                  />
 
-                {/* Reader Toolbar Header */}
-                <div className="flex flex-wrap items-center justify-between gap-3 pb-5 border-b border-white/[0.08] mb-6 relative z-10">
-                  <div className="flex items-center gap-3">
-                    <div
-                      style={{
-                        backgroundColor: `${currentTheme.c3}20`,
-                        borderColor: `${currentTheme.c3}40`,
-                        color: currentTheme.c3
-                      }}
-                      className="w-9 h-9 rounded-xl border flex items-center justify-center"
-                    >
-                      <BookOpen className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <h2 className="text-sm font-mono uppercase tracking-[0.2em] font-bold text-white">
-                          Stage 03 // The Chronicle
-                        </h2>
-                        {isStreaming && (
-                          <span
-                            style={{
-                              backgroundColor: `${currentTheme.c3}20`,
-                              borderColor: `${currentTheme.c3}50`,
-                              color: currentTheme.c3
-                            }}
-                            className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border text-[10px] font-mono font-bold animate-pulse"
-                          >
-                            <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
-                            STREAMING LIVE
-                          </span>
-                        )}
-                        {!isStreaming && storyText && (
-                          <span className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-[10px] font-mono text-emerald-400">
-                            ARCHIVE COMPLETE
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-[11px] font-mono text-slate-400">
-                        Cinematic Prose Output & Reader
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Reading Tools */}
-                  <div className="flex items-center gap-2">
-                    {storyText && (
-                      <>
-                        {/* Word Count Badge */}
-                        <div className="hidden sm:flex items-center gap-1 px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/[0.08] text-xs font-mono text-slate-300">
-                          <FileText
-                            className="w-3.5 h-3.5"
-                            style={{ color: currentTheme.c1 }}
-                          />
-                          <span>{wordCount} w</span>
-                          <span className="text-slate-600">|</span>
-                          <span className="text-slate-400">
-                            ~{estimatedReadMinutes}m
-                          </span>
-                        </div>
-
-                        {/* Font size toggle */}
-                        <button
-                          onClick={() => {
-                            setFontSize((prev) =>
-                              prev === "sm"
-                                ? "base"
-                                : prev === "base"
-                                ? "lg"
-                                : "sm"
-                            );
-                            playCyberBlip(1000, 0.03);
-                          }}
-                          className="px-2 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] text-xs font-mono text-slate-300 cursor-pointer"
-                          title="Adjust typography size"
-                        >
-                          Size: {fontSize.toUpperCase()}
-                        </button>
-
-                        {/* Copy Story */}
-                        <button
-                          onClick={handleCopyStory}
-                          className="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] text-xs font-mono text-slate-300 flex items-center gap-1.5 transition-colors cursor-pointer"
-                          title="Copy story markdown"
-                        >
-                          {copied ? (
-                            <>
-                              <Check className="w-3.5 h-3.5 text-emerald-400" />
-                              <span className="hidden sm:inline text-emerald-400">
-                                Copied
-                              </span>
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-3.5 h-3.5 text-slate-400" />
-                              <span className="hidden sm:inline">Copy</span>
-                            </>
-                          )}
-                        </button>
-
-                        {/* Download Markdown */}
-                        <button
-                          onClick={handleDownloadMarkdown}
-                          className="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] text-xs font-mono text-slate-300 flex items-center gap-1.5 transition-colors cursor-pointer"
-                          title="Export as Markdown file"
-                        >
-                          <Download className="w-3.5 h-3.5 text-slate-400" />
-                          <span className="hidden sm:inline">Export</span>
-                        </button>
-                      </>
-                    )}
-                  </div>
-                </div>
-
-                {/* Main Content Area with Dynamic Prose Font */}
-                <div
-                  ref={proseContainerRef}
-                  className={`flex-1 overflow-y-auto max-h-[640px] pr-2 scrollbar-cyber relative z-10 ${
-                    fontSize === "sm"
-                      ? "text-base"
-                      : fontSize === "lg"
-                      ? "text-xl"
-                      : "text-lg"
-                  }`}
-                >
-                  {/* State 1: Awaiting Generation */}
-                  {!storyText && !isStreaming && (
-                    <div className="h-full min-h-[420px] flex flex-col items-center justify-center text-center p-8 space-y-5 border border-dashed border-white/[0.1] rounded-2xl bg-black/20">
-                      <div className="relative">
-                        <div
-                          style={{
-                            borderColor: `${currentTheme.c2}35`,
-                            backgroundColor: `${currentTheme.c2}12`
-                          }}
-                          className="w-16 h-16 rounded-2xl border flex items-center justify-center text-white"
-                        >
-                          <Radio className="w-8 h-8 animate-pulse text-white" />
-                        </div>
-                        <div
-                          style={{ backgroundColor: currentTheme.c3 }}
-                          className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-black"
-                        >
-                          <Zap className="w-3 h-3" />
-                        </div>
-                      </div>
-
-                      <div className="space-y-2 max-w-md">
-                        <h3 className="text-lg font-bold text-white">
-                          Chronicle Broadcast Standby
-                        </h3>
-                        <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                          The narrative outline is staged in the architect console. Click{" "}
-                          <span
-                            className="font-mono font-bold"
-                            style={{ color: currentTheme.c2 }}
-                          >
-                            "Initialize Chronicle Stream"
-                          </span>{" "}
-                          to begin real-time streaming prose generation.
-                        </p>
-                      </div>
-
-                      <button
-                        onClick={handleStreamStory}
-                        style={fullGradientButton}
-                        className="flex items-center gap-2 px-6 py-3 rounded-xl text-white font-mono text-xs uppercase tracking-widest font-bold transition-all transform hover:-translate-y-0.5 shadow-lg cursor-pointer"
-                      >
-                        <Play className="w-4 h-4 fill-white" />
-                        <span>IGNITE CHRONICLE TRANSMISSION</span>
-                      </button>
-                    </div>
-                  )}
-
-                  {/* State 2: Live Streaming or Complete Story Prose */}
-                  {(storyText || isStreaming) && (
-                    <div className="prose-cinematic space-y-4">
-                      {/* Story Title Header */}
-                      <div className="pb-4 mb-6 border-b border-white/[0.08]">
-                        <h1
-                          style={titleGradient}
-                          className="text-2xl sm:text-3xl font-extrabold tracking-tight"
-                        >
-                          {outline?.title || "The Chronicle"}
-                        </h1>
-                        <p
-                          style={{ color: currentTheme.c1 }}
-                          className="text-xs font-mono tracking-widest uppercase mt-1.5"
-                        >
-                          Narrative Sequence // {formData.genre}
-                        </p>
-                      </div>
-
-                      {/* Rendered Prose Content with Literary Typography */}
+                  {/* Card Header */}
+                  <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-white/[0.08] mb-4 sm:mb-5">
+                    <div className="flex items-center gap-2 sm:gap-2.5">
                       <div
-                        style={{ fontFamily: currentFont.proseFont }}
-                        className="text-slate-200 leading-[1.92] text-[1.125rem]"
+                        style={{
+                          backgroundColor: `${currentTheme.c2}20`,
+                          borderColor: `${currentTheme.c2}40`,
+                          color: currentTheme.c2
+                        }}
+                        className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg border flex items-center justify-center flex-shrink-0"
                       >
-                        <ReactMarkdown>{storyText}</ReactMarkdown>
-
-                        {/* LIVE STREAMING GLOWING CURSOR BLOCK (|) */}
-                        {isStreaming && (
-                          <span
-                            style={{
-                              backgroundImage: `linear-gradient(180deg, ${currentTheme.c1} 0%, ${currentTheme.c2} 50%, ${currentTheme.c3} 100%)`
-                            }}
-                            className="inline-block w-2.5 h-6 ml-1.5 align-middle animate-cyber-cursor rounded-xs"
-                            title="Active Token Stream"
-                          />
-                        )}
+                        <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      </div>
+                      <div>
+                        <h2 className="text-xs sm:text-sm font-mono uppercase tracking-[0.2em] font-bold text-white">
+                          Stage 02 // Story Architect
+                        </h2>
+                        <p className="text-[10px] sm:text-[11px] font-mono text-slate-400">
+                          Editable Outline & Narrative Beats
+                        </p>
                       </div>
                     </div>
-                  )}
-                </div>
 
-                {/* Footer Controls & Stats */}
-                {(storyText || isStreaming) && (
-                  <div className="mt-4 pt-4 border-t border-white/[0.08] flex items-center justify-between text-xs font-mono text-slate-500 relative z-10">
-                    <div className="flex items-center gap-3">
-                      <button
-                        onClick={() => setAutoScroll(!autoScroll)}
-                        style={
-                          autoScroll
-                            ? {
-                                borderColor: `${currentTheme.c1}40`,
-                                backgroundColor: `${currentTheme.c1}12`,
-                                color: currentTheme.c1
-                              }
-                            : {}
-                        }
-                        className="flex items-center gap-1.5 px-2 py-1 rounded text-[11px] border border-white/[0.08] transition-colors cursor-pointer"
-                      >
-                        <span>Auto-scroll</span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                      </button>
-                      <span className="hidden sm:inline">
-                        Font:{" "}
-                        <span className="text-slate-300 font-semibold">
-                          {currentFont.name} ({currentFont.proseFont.split(",")[0].replace(/'/g, "")})
-                        </span>
-                      </span>
+                    <button
+                      onClick={handleResetToPitch}
+                      className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg text-[10px] sm:text-[11px] font-mono text-slate-400 hover:text-white bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] transition-colors cursor-pointer"
+                      title="Scrap and re-pitch"
+                    >
+                      <RotateCcw className="w-3 h-3" />
+                      <span>Re-Pitch</span>
+                    </button>
+                  </div>
+
+                  {/* Metadata Badges */}
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-4 sm:mb-5 pb-3 sm:pb-4 border-b border-white/[0.06]">
+                    <span
+                      style={{
+                        backgroundColor: `${currentTheme.c1}15`,
+                        borderColor: `${currentTheme.c1}35`,
+                        color: currentTheme.c1
+                      }}
+                      className="text-[10px] sm:text-[11px] font-mono px-2 sm:px-2.5 py-0.5 rounded-full border truncate max-w-[150px] sm:max-w-none"
+                    >
+                      {formData.genre}
+                    </span>
+                    <span
+                      style={{
+                        backgroundColor: `${currentTheme.c2}15`,
+                        borderColor: `${currentTheme.c2}35`,
+                        color: currentTheme.c2
+                      }}
+                      className="text-[10px] sm:text-[11px] font-mono px-2 sm:px-2.5 py-0.5 rounded-full border truncate max-w-[150px] sm:max-w-none"
+                    >
+                      {formData.tone}
+                    </span>
+                  </div>
+
+                  {/* Form Fields */}
+                  <div className="space-y-3 sm:space-y-4">
+                    {/* Title */}
+                    <div className="space-y-1 sm:space-y-1.5">
+                      <label className="block text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.18em] text-slate-300 font-semibold">
+                        Story Title
+                      </label>
+                      <input
+                        name="title"
+                        value={outline.title || ""}
+                        onChange={handleOutlineChange}
+                        style={{ outlineColor: currentTheme.c1 }}
+                        className="w-full bg-white/[0.03] border border-white/[0.12] focus:bg-white/[0.05] rounded-xl px-3 py-2 sm:px-3.5 sm:py-2.5 text-white font-bold text-sm sm:text-base transition-all font-sans"
+                      />
                     </div>
 
-                    {!isStreaming && storyText && (
-                      <div className="flex items-center gap-2">
+                    {/* Hook */}
+                    <div className="space-y-1 sm:space-y-1.5">
+                      <label
+                        style={{ color: currentTheme.c1 }}
+                        className="block text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.18em] font-semibold flex items-center justify-between"
+                      >
+                        <span>The Hook // Opening Line</span>
+                        <span className="text-[9px] sm:text-[10px] text-slate-500">Incident</span>
+                      </label>
+                      <textarea
+                        name="hook"
+                        value={outline.hook || ""}
+                        onChange={handleOutlineChange}
+                        rows={2}
+                        style={{ outlineColor: currentTheme.c1 }}
+                        className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl p-2.5 sm:p-3 text-xs sm:text-sm text-slate-200 transition-all resize-none"
+                      />
+                    </div>
+
+                    {/* Act 1 */}
+                    <div className="space-y-1 sm:space-y-1.5">
+                      <label
+                        style={{ color: currentTheme.c2 }}
+                        className="block text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.18em] font-semibold"
+                      >
+                        Act I: Setup & Catalyst
+                      </label>
+                      <textarea
+                        name="act_1_setup"
+                        value={outline.act_1_setup || ""}
+                        onChange={handleOutlineChange}
+                        rows={3}
+                        style={{ outlineColor: currentTheme.c2 }}
+                        className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl p-2.5 sm:p-3 text-xs sm:text-sm text-slate-200 transition-all resize-none"
+                      />
+                    </div>
+
+                    {/* Act 2 */}
+                    <div className="space-y-1 sm:space-y-1.5">
+                      <label
+                        style={{ color: currentTheme.c2 }}
+                        className="block text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.18em] font-semibold"
+                      >
+                        Act II: Confrontation & Midpoint Reversal
+                      </label>
+                      <textarea
+                        name="act_2_confrontation"
+                        value={outline.act_2_confrontation || ""}
+                        onChange={handleOutlineChange}
+                        rows={3}
+                        style={{ outlineColor: currentTheme.c2 }}
+                        className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl p-2.5 sm:p-3 text-xs sm:text-sm text-slate-200 transition-all resize-none"
+                      />
+                    </div>
+
+                    {/* Act 3 */}
+                    <div className="space-y-1 sm:space-y-1.5">
+                      <label
+                        style={{ color: currentTheme.c3 }}
+                        className="block text-[10px] sm:text-[11px] font-mono uppercase tracking-[0.18em] font-semibold"
+                      >
+                        Act III: Climax & Resolution
+                      </label>
+                      <textarea
+                        name="act_3_resolution"
+                        value={outline.act_3_resolution || ""}
+                        onChange={handleOutlineChange}
+                        rows={3}
+                        style={{ outlineColor: currentTheme.c3 }}
+                        className="w-full bg-white/[0.03] border border-white/[0.08] rounded-xl p-2.5 sm:p-3 text-xs sm:text-sm text-slate-200 transition-all resize-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Primary Ignition Action */}
+                  <div className="pt-4 sm:pt-6 space-y-2.5 sm:space-y-3">
+                    <button
+                      onClick={handleStreamStory}
+                      disabled={isStreaming}
+                      style={fullGradientButton}
+                      className="w-full relative group overflow-hidden text-white font-mono text-xs uppercase tracking-wider sm:tracking-[0.18em] font-bold py-3 sm:py-3.5 px-4 sm:px-5 rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg disabled:opacity-50 disabled:transform-none cursor-pointer"
+                    >
+                      <div className="flex items-center justify-center gap-2">
+                        {isStreaming ? (
+                          <>
+                            <Radio className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin text-white" />
+                            <span>TRANSMITTING PROSE...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white fill-white" />
+                            <span>
+                              {storyText
+                                ? "RE-BROADCAST CHRONICLE"
+                                : "INITIALIZE CHRONICLE STREAM"}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </button>
+
+                    <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-mono text-slate-500 px-1">
+                      <span>Target: ~600-1200 words</span>
+                      <span>Markdown Prose</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* RIGHT PANE: THE CHRONICLE (Live Streaming Reading View) */}
+              <div
+                className={`lg:col-span-7 space-y-4 animate-fade-in-up-delayed ${
+                  mobileTab === "chronicle" ? "block" : "hidden lg:block"
+                }`}
+              >
+                <div className="cyber-glass-uniform rounded-2xl sm:rounded-3xl border border-white/[0.1] p-4 sm:p-6 md:p-8 relative min-h-[460px] sm:min-h-[580px] flex flex-col shadow-2xl overflow-hidden">
+                  {/* Right Pane Gradient Accent Bar */}
+                  <div
+                    style={{
+                      background: `linear-gradient(90deg, ${currentTheme.c2} 0%, ${currentTheme.c3} 100%)`
+                    }}
+                    className="absolute top-0 left-0 right-0 h-[2px] opacity-70"
+                  />
+
+                  {/* Reader Toolbar Header - Responsive Layout */}
+                  <div className="flex flex-wrap items-center justify-between gap-2.5 sm:gap-3 pb-3.5 sm:pb-5 border-b border-white/[0.08] mb-4 sm:mb-6 relative z-10">
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <div
+                        style={{
+                          backgroundColor: `${currentTheme.c3}20`,
+                          borderColor: `${currentTheme.c3}40`,
+                          color: currentTheme.c3
+                        }}
+                        className="w-7 h-7 sm:w-9 sm:h-9 rounded-xl border flex items-center justify-center flex-shrink-0"
+                      >
+                        <BookOpen className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-1.5 sm:gap-2">
+                          <h2 className="text-xs sm:text-sm font-mono uppercase tracking-[0.2em] font-bold text-white">
+                            Stage 03 // The Chronicle
+                          </h2>
+                          {isStreaming && (
+                            <span
+                              style={{
+                                backgroundColor: `${currentTheme.c3}20`,
+                                borderColor: `${currentTheme.c3}50`,
+                                color: currentTheme.c3
+                              }}
+                              className="flex items-center gap-1 px-2 py-0.5 rounded-full border text-[9px] sm:text-[10px] font-mono font-bold animate-pulse"
+                            >
+                              <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
+                              <span className="hidden xs:inline">STREAMING</span>
+                            </span>
+                          )}
+                          {!isStreaming && storyText && (
+                            <span className="flex items-center gap-1 px-1.5 sm:px-2 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-[9px] sm:text-[10px] font-mono text-emerald-400">
+                              COMPLETE
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-[10px] sm:text-[11px] font-mono text-slate-400">
+                          Cinematic Prose Output & Reader
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Reading Tools - Responsive Icons & Badges */}
+                    <div className="flex items-center gap-1.5 sm:gap-2">
+                      {storyText && (
+                        <>
+                          {/* Word Count Badge */}
+                          <div className="flex items-center gap-1 px-2 sm:px-2.5 py-1 rounded-lg bg-white/[0.03] border border-white/[0.08] text-[10px] sm:text-xs font-mono text-slate-300">
+                            <FileText
+                              className="w-3 h-3 sm:w-3.5 sm:h-3.5"
+                              style={{ color: currentTheme.c1 }}
+                            />
+                            <span>{wordCount}w</span>
+                            <span className="text-slate-600 hidden xs:inline">|</span>
+                            <span className="text-slate-400 hidden xs:inline">~{estimatedReadMinutes}m</span>
+                          </div>
+
+                          {/* Font size toggle */}
+                          <button
+                            onClick={() => {
+                              setFontSize((prev) =>
+                                prev === "sm"
+                                  ? "base"
+                                  : prev === "base"
+                                  ? "lg"
+                                  : "sm"
+                              );
+                              playCyberBlip(1000, 0.03);
+                            }}
+                            className="px-2 py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] text-[10px] sm:text-xs font-mono text-slate-300 cursor-pointer"
+                            title="Adjust typography size"
+                          >
+                            {fontSize.toUpperCase()}
+                          </button>
+
+                          {/* Copy Story */}
+                          <button
+                            onClick={handleCopyStory}
+                            className="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] text-[10px] sm:text-xs font-mono text-slate-300 flex items-center gap-1.5 transition-colors cursor-pointer"
+                            title="Copy story markdown"
+                          >
+                            {copied ? (
+                              <>
+                                <Check className="w-3.5 h-3.5 text-emerald-400" />
+                                <span className="hidden sm:inline text-emerald-400">
+                                  Copied
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <Copy className="w-3.5 h-3.5 text-slate-400" />
+                                <span className="hidden sm:inline">Copy</span>
+                              </>
+                            )}
+                          </button>
+
+                          {/* Download Markdown */}
+                          <button
+                            onClick={handleDownloadMarkdown}
+                            className="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.08] text-[10px] sm:text-xs font-mono text-slate-300 flex items-center gap-1.5 transition-colors cursor-pointer"
+                            title="Export as Markdown file"
+                          >
+                            <Download className="w-3.5 h-3.5 text-slate-400" />
+                            <span className="hidden sm:inline">Export</span>
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Main Content Area with Touch Scrolling */}
+                  <div
+                    ref={proseContainerRef}
+                    className={`flex-1 overflow-y-auto max-h-[55vh] sm:max-h-[640px] pr-1.5 sm:pr-2 scrollbar-cyber relative z-10 ${
+                      fontSize === "sm"
+                        ? "text-sm sm:text-base"
+                        : fontSize === "lg"
+                        ? "text-lg sm:text-xl"
+                        : "text-base sm:text-lg"
+                    }`}
+                  >
+                    {/* State 1: Awaiting Generation */}
+                    {!storyText && !isStreaming && (
+                      <div className="h-full min-h-[340px] sm:min-h-[420px] flex flex-col items-center justify-center text-center p-4 sm:p-8 space-y-4 sm:space-y-5 border border-dashed border-white/[0.1] rounded-2xl bg-black/20">
+                        <div className="relative">
+                          <div
+                            style={{
+                              borderColor: `${currentTheme.c2}35`,
+                              backgroundColor: `${currentTheme.c2}12`
+                            }}
+                            className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl border flex items-center justify-center text-white"
+                          >
+                            <Radio className="w-6 h-6 sm:w-8 sm:h-8 animate-pulse text-white" />
+                          </div>
+                          <div
+                            style={{ backgroundColor: currentTheme.c3 }}
+                            className="absolute -bottom-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-black"
+                          >
+                            <Zap className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
+                          </div>
+                        </div>
+
+                        <div className="space-y-1.5 sm:space-y-2 max-w-md px-2">
+                          <h3 className="text-base sm:text-lg font-bold text-white">
+                            Chronicle Broadcast Standby
+                          </h3>
+                          <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                            The narrative outline is staged in the architect console. Click{" "}
+                            <span
+                              className="font-mono font-bold"
+                              style={{ color: currentTheme.c2 }}
+                            >
+                              "Initialize Chronicle Stream"
+                            </span>{" "}
+                            to begin real-time streaming prose generation.
+                          </p>
+                        </div>
+
                         <button
-                          onClick={handleStartNewStory}
-                          className="px-3 py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] transition-colors cursor-pointer"
+                          onClick={handleStreamStory}
+                          style={fullGradientButton}
+                          className="flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl text-white font-mono text-[11px] sm:text-xs uppercase tracking-wider sm:tracking-widest font-bold transition-all transform hover:-translate-y-0.5 shadow-lg cursor-pointer"
                         >
-                          New Narrative
+                          <Play className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-white" />
+                          <span>IGNITE CHRONICLE TRANSMISSION</span>
                         </button>
                       </div>
                     )}
+
+                    {/* State 2: Live Streaming or Complete Story Prose */}
+                    {(storyText || isStreaming) && (
+                      <div className="prose-cinematic space-y-3 sm:space-y-4">
+                        {/* Story Title Header */}
+                        <div className="pb-3 sm:pb-4 mb-4 sm:mb-6 border-b border-white/[0.08]">
+                          <h1
+                            style={titleGradient}
+                            className="text-xl sm:text-3xl font-extrabold tracking-tight"
+                          >
+                            {outline?.title || "The Chronicle"}
+                          </h1>
+                          <p
+                            style={{ color: currentTheme.c1 }}
+                            className="text-[10px] sm:text-xs font-mono tracking-widest uppercase mt-1 sm:mt-1.5"
+                          >
+                            Narrative Sequence // {formData.genre}
+                          </p>
+                        </div>
+
+                        {/* Rendered Prose Content with Literary Typography */}
+                        <div
+                          style={{ fontFamily: currentFont.proseFont }}
+                          className="text-slate-200 leading-[1.85] sm:leading-[1.92]"
+                        >
+                          <ReactMarkdown>{storyText}</ReactMarkdown>
+
+                          {/* LIVE STREAMING GLOWING CURSOR BLOCK (|) */}
+                          {isStreaming && (
+                            <span
+                              style={{
+                                backgroundImage: `linear-gradient(180deg, ${currentTheme.c1} 0%, ${currentTheme.c2} 50%, ${currentTheme.c3} 100%)`
+                              }}
+                              className="inline-block w-2 sm:w-2.5 h-5 sm:h-6 ml-1 sm:ml-1.5 align-middle animate-cyber-cursor rounded-xs"
+                              title="Active Token Stream"
+                            />
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
+
+                  {/* Footer Controls & Stats */}
+                  {(storyText || isStreaming) && (
+                    <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-white/[0.08] flex items-center justify-between text-[11px] sm:text-xs font-mono text-slate-500 relative z-10">
+                      <div className="flex items-center gap-2 sm:gap-3">
+                        <button
+                          onClick={() => setAutoScroll(!autoScroll)}
+                          style={
+                            autoScroll
+                              ? {
+                                  borderColor: `${currentTheme.c1}40`,
+                                  backgroundColor: `${currentTheme.c1}12`,
+                                  color: currentTheme.c1
+                                }
+                              : {}
+                          }
+                          className="flex items-center gap-1 sm:gap-1.5 px-2 py-1 rounded text-[10px] sm:text-[11px] border border-white/[0.08] transition-colors cursor-pointer"
+                        >
+                          <span>Auto-scroll</span>
+                          <span className="w-1.5 h-1.5 rounded-full bg-current" />
+                        </button>
+                        <span className="hidden sm:inline">
+                          Font:{" "}
+                          <span className="text-slate-300 font-semibold">
+                            {currentFont.name}
+                          </span>
+                        </span>
+                      </div>
+
+                      {!isStreaming && storyText && (
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={handleStartNewStory}
+                            className="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.08] transition-colors cursor-pointer text-[10px] sm:text-xs"
+                          >
+                            New Story
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -1690,5 +1752,6 @@ export default function App() {
     setOutline(null);
     setStoryText("");
     setIsStreaming(false);
+    setMobileTab("blueprint");
   }
 }
